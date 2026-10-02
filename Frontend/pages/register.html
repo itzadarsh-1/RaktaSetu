@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register - RaktaSetu</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/auth.css">
+</head>
+
+<body>
+
+    <!-- Register Page -->
+
+    <div class="auth-page">
+
+        <!-- Left Section -->
+
+        <div class="auth-left">
+
+            <div class="auth-logo">
+                <span>+</span>
+                <h2>RaktaSetu</h2>
+            </div>
+
+            <h1>
+                Become a
+                <span>Blood Donor</span>
+            </h1>
+
+            <p>
+                Register with RaktaSetu and help people find
+                potential blood donors during emergency situations.
+            </p>
+
+            <div class="auth-features">
+
+                <div>
+                    🩸 Help save lives
+                </div>
+
+                <div>
+                    📍 Connect with nearby people
+                </div>
+
+                <div>
+                    🚨 Support emergency requests
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Register Form -->
+
+        <div class="auth-right">
+            <button id="themeToggle" class="theme-toggle">
+                🌙
+            </button>
+
+            <a href="../index.html" class="back-home">
+                ← Back to Home
+            </a>
+
+            <div class="auth-card">
+
+                <div class="auth-card-header">
+
+                    <h2>Create Account</h2>
+
+                    <p>
+                        Register your RaktaSetu account
+                    </p>
+
+                </div>
+
+
+                <form id="registerForm">
+
+                    <!-- Name -->
+
+                    <div class="form-group">
+
+                        <label for="name">
+                            Full Name
+                        </label>
+
+                        <input type="text" id="name" placeholder="Enter your full name" required>
+
+                    </div>
+
+
+                    <!-- Email -->
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email
+                        </label>
+
+                        <input type="email" id="email" placeholder="Enter your email" required>
+
+                    </div>
+
+
+                    <!-- Mobile -->
+
+                    <div class="form-group">
+
+                        <label for="mobile">
+                            Mobile Number
+                        </label>
+
+                        <input type="tel" id="mobile" placeholder="Enter 10 digit mobile number" maxlength="10"
+                            required>
+
+                    </div>
+
+
+                    <!-- Role + Blood Group -->
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="role">
+                                Role
+                            </label>
+
+                            <select id="role" required>
+
+                                <option value="">
+                                    Select Role
+                                </option>
+
+                                <option value="DONOR">
+                                    Donor
+                                </option>
+
+                                <option value="REQUESTER">
+                                    Requester
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="bloodGroup">
+                                Blood Group
+                            </label>
+
+                            <select id="bloodGroup">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Location -->
+
+                    <div class="form-group">
+
+                        <label for="location">
+                            Location
+                        </label>
+
+                        <input type="text" id="location" placeholder="Enter your city/location" required>
+
+                    </div>
+
+
+                    <!-- Password -->
+
+                    <div class="form-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <input type="password" id="password" placeholder="Create a password" required>
+
+                    </div>
+
+
+                    <!-- Confirm Password -->
+
+                    <div class="form-group">
+
+                        <label for="confirmPassword">
+                            Confirm Password
+                        </label>
+
+                        <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+
+                    </div>
+
+
+                    <!-- Submit -->
+
+                    <button type="submit" class="auth-btn">
+                        Create Account
+                    </button>
+
+                </form>
+
+
+                <p class="switch-text">
+
+                    Already have an account?
+
+                    <a href="login.html">
+                        Login
+                    </a>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="../js/main.js"></script>
+    <script src="../js/auth.js"></script>
+
+</body>
+
+</html>

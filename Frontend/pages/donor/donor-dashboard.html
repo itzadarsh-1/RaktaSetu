@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Donor Dashboard - RaktaSetu</title>
+
+    <link rel="stylesheet"
+        href="../../css/style.css">
+
+    <link rel="stylesheet"
+        href="../../css/dashboard.css">
+
+</head>
+
+
+<body>
+
+<div class="dashboard-page">
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="dashboard-navbar">
+
+
+        <div class="dashboard-logo">
+
+            <div class="dashboard-logo-icon">
+                +
+            </div>
+
+            RaktaSetu
+
+        </div>
+
+
+        <nav class="dashboard-nav">
+
+            <a href="donor-dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="requests.html">
+                Requests
+            </a>
+
+            <a href="donor-profile.html">
+                Profile
+            </a>
+
+        </nav>
+
+
+        <div class="dashboard-actions">
+
+            <button
+                id="themeToggle"
+                class="dashboard-theme">
+                🌙
+            </button>
+
+
+            <button
+                id="logoutBtn"
+                class="logout-btn">
+                Logout
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="dashboard-main">
+
+
+        <!-- Welcome -->
+
+        <div class="dashboard-welcome">
+
+
+            <div>
+
+                <h1>
+                    Welcome,
+                    <span id="dashboardName">
+                        Donor
+                    </span>
+                    👋
+                </h1>
+
+                <p>
+                    Manage your blood donation profile
+                    and emergency requests.
+                </p>
+
+            </div>
+
+
+            <div
+                id="dashboardAvailability"
+                class="availability-badge">
+
+                🟢 Available for Donation
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================= STATS ================= -->
+
+        <div class="dashboard-stats">
+
+
+            <!-- Blood Group -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🩸
+                </div>
+
+                <div>
+
+                    <h2 id="dashboardBlood">
+                        O+
+                    </h2>
+
+                    <p>
+                        Blood Group
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Donations -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ❤️
+                </div>
+
+                <div>
+
+                    <h2 id="donationCount">
+                        0
+                    </h2>
+
+                    <p>
+                        Donations
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Requests -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🚨
+                </div>
+
+                <div>
+
+                    <h2 id="requestCount">
+                        0
+                    </h2>
+
+                    <p>
+                        Requests Received
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <div class="dashboard-content-grid">
+
+
+            <!-- PROFILE -->
+
+            <div class="dashboard-card">
+
+
+                <div class="dashboard-card-header">
+
+                    <h2>
+                        My Profile
+                    </h2>
+
+                </div>
+
+
+
+                <div class="profile-details">
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Full Name
+                        </span>
+
+                        <strong id="profileName">
+                            Adarsh Kumar
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Blood Group
+                        </span>
+
+                        <strong id="profileBlood">
+                            O+
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Location
+                        </span>
+
+                        <strong id="profileLocation">
+                            Dehradun
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Mobile Number
+                        </span>
+
+                        <strong id="profileMobile">
+                            987XXXXXXX
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Email
+                        </span>
+
+                        <strong id="profileEmail">
+                            donor@example.com
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="detail-item">
+
+                        <span>
+                            Availability
+                        </span>
+
+                        <strong id="profileAvailability">
+                            Available
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <a
+                    href="donor-profile.html"
+                    class="dashboard-btn">
+
+                    Update Profile
+
+                </a>
+
+
+            </div>
+
+
+
+            <!-- REQUESTS -->
+
+            <div class="dashboard-card">
+
+
+                <div class="dashboard-card-header">
+
+                    <h2>
+                        Emergency Requests
+                    </h2>
+
+                </div>
+
+
+
+                <div class="request-list">
+
+
+                    <div class="request-item">
+
+
+                        <div>
+
+                            <strong class="blood-request">
+                                O+
+                            </strong>
+
+                            <p>
+                                📍 Dehradun
+                            </p>
+
+                            <p>
+                                🏥 City Hospital
+                            </p>
+
+                            <small>
+                                Required: 2 Units
+                            </small>
+
+                        </div>
+
+
+                        <div>
+
+                            <span class="request-label">
+                                EMERGENCY
+                            </span>
+
+                            <br>
+
+                            <button
+                                class="request-btn">
+
+                                View Request
+
+                            </button>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="request-item">
+
+
+                        <div>
+
+                            <strong class="blood-request">
+                                O+
+                            </strong>
+
+                            <p>
+                                📍 Clement Town
+                            </p>
+
+                            <p>
+                                🏥 Emergency Care Center
+                            </p>
+
+                            <small>
+                                Required: 1 Unit
+                            </small>
+
+                        </div>
+
+
+                        <div>
+
+                            <span class="request-label">
+                                URGENT
+                            </span>
+
+                            <br>
+
+                            <button
+                                class="request-btn">
+
+                                View Request
+
+                            </button>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+
+<script src="../../js/main.js"></script>
+
+<script src="../../js/donor.js"></script>
+
+
+</body>
+
+</html>

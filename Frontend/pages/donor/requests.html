@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Blood Requests - RaktaSetu</title>
+
+    <link
+        rel="stylesheet"
+        href="../../css/dashboard.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- Navbar -->
+
+    <header class="dashboard-navbar">
+
+        <div class="dashboard-logo">
+
+            <span class="logo-icon">+</span>
+
+            <span>RaktaSetu</span>
+
+        </div>
+
+
+        <nav class="dashboard-nav">
+
+            <a href="donor-dashboard.html">
+                Dashboard
+            </a>
+
+            <a
+                href="requests.html"
+                class="active"
+            >
+                Requests
+            </a>
+
+            <a href="donor-profile.html">
+                Profile
+            </a>
+
+        </nav>
+
+
+        <div class="dashboard-actions">
+
+            <button
+                id="themeToggle"
+                class="theme-toggle"
+            >
+                🌙
+            </button>
+
+            <button
+                id="logoutBtn"
+                class="logout-btn"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- Main -->
+
+    <main class="requests-container">
+
+
+        <!-- Header -->
+
+        <section class="page-header">
+
+            <div>
+
+                <p class="page-label">
+                    EMERGENCY BLOOD SUPPORT
+                </p>
+
+                <h1>
+                    Blood Requests
+                </h1>
+
+                <p>
+                    Check available blood requests and
+                    respond when you are available to donate.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- Filters -->
+
+        <section class="request-filter">
+
+
+            <div class="filter-group">
+
+                <label for="bloodFilter">
+                    Blood Group
+                </label>
+
+                <select id="bloodFilter">
+
+                    <option value="all">
+                        All Blood Groups
+                    </option>
+
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+
+                </select>
+
+            </div>
+
+
+
+            <div class="filter-group">
+
+                <label for="locationFilter">
+                    Location
+                </label>
+
+                <input
+                    type="text"
+                    id="locationFilter"
+                    placeholder="Enter location"
+                >
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- Dynamic Requests -->
+
+        <section class="requests-section">
+
+            <div id="requestsList">
+
+                <!-- Requests will load here -->
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <script src="../../js/main.js"></script>
+
+    <script src="../../js/donor.js"></script>
+
+
+</body>
+
+</html>

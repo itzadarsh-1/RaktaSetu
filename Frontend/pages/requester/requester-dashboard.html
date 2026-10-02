@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Requester Dashboard - RaktaSetu</title>
+
+    <link
+        rel="stylesheet"
+        href="../../css/dashboard.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../../css/requester.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- Navbar -->
+
+    <header class="dashboard-navbar">
+
+        <div class="dashboard-logo">
+
+            <span class="logo-icon">+</span>
+
+            <span>RaktaSetu</span>
+
+        </div>
+
+
+        <nav class="dashboard-nav">
+
+            <a
+                href="requester-dashboard.html"
+                class="active"
+            >
+                Dashboard
+            </a>
+
+            <a href="create-request.html">
+                Create Request
+            </a>
+
+        </nav>
+
+
+        <div class="dashboard-actions">
+
+            <button
+                id="themeToggle"
+                class="theme-toggle"
+            >
+                🌙
+            </button>
+
+            <button
+                id="logoutBtn"
+                class="logout-btn"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- Dashboard -->
+
+    <main class="requester-dashboard-container">
+
+
+        <!-- Welcome -->
+
+        <section class="requester-welcome">
+
+            <p class="page-label">
+                REQUESTER DASHBOARD
+            </p>
+
+            <h1>
+                Welcome to RaktaSetu
+            </h1>
+
+            <p>
+                Manage your blood requests and find
+                potential donors during emergency situations.
+            </p>
+
+        </section>
+
+
+
+        <!-- Stats -->
+
+        <section class="requester-stats">
+
+
+            <div class="requester-stat-card">
+
+                <div class="stat-icon">
+                    🩸
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Requests
+                    </span>
+
+                    <strong id="totalRequests">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="requester-stat-card">
+
+                <div class="stat-icon">
+                    ⏳
+                </div>
+
+                <div>
+
+                    <span>
+                        Pending
+                    </span>
+
+                    <strong id="pendingRequests">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="requester-stat-card">
+
+                <div class="stat-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <span>
+                        Accepted
+                    </span>
+
+                    <strong id="acceptedRequests">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="requester-stat-card">
+
+                <div class="stat-icon">
+                    ✕
+                </div>
+
+                <div>
+
+                    <span>
+                        Rejected
+                    </span>
+
+                    <strong id="rejectedRequests">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- Requests -->
+
+        <section class="my-requests-section">
+
+
+            <div class="my-requests-header">
+
+                <div>
+
+                    <p class="page-label">
+                        BLOOD REQUESTS
+                    </p>
+
+                    <h2>
+                        My Requests
+                    </h2>
+
+                </div>
+
+
+                <a
+                    href="create-request.html"
+                    class="create-new-request-btn"
+                >
+                    + Create New Request
+                </a>
+
+            </div>
+
+
+
+            <div id="myRequestsList">
+
+                <!-- Requests will appear here -->
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <script src="../../js/main.js"></script>
+
+    <script src="../../js/requester.js"></script>
+
+
+</body>
+
+</html>

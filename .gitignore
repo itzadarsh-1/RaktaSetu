@@ -1,0 +1,22 @@
+# Maven
+/target/
+*.class
+
+# VS Code
+/.vscode/
+
+# IntelliJ
+.idea/
+
+# Log files
+*.log
+error.txt
+
+# Secret files
+.env
+.env.*
+!.env.example
+
+# System files
+.DS_Store
+Thumbs.db

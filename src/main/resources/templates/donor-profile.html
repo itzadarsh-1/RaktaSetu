@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Donor Profile | RaktaSetu</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <meta name="_csrf" th:content="${_csrf.token}">
+
+    <!-- DAY / NIGHT THEME -->
+    <script src="/js/theme.js" defer></script>
+</head>
+
+<body data-role="DONOR" data-page="profile">
+
+    <!-- HEADER -->
+    <header class="top dashboard-top">
+
+        <!-- ORIGINAL RAKTASETU LOGO -->
+        <a class="logo header-brand" href="/dashboard">
+            <img
+                src="/images/raktasetu-logo.png"
+                alt="RaktaSetu"
+                class="header-brand-logo">
+        </a>
+
+        <span>Donor Portal</span>
+
+        <form method="post" action="/logout" class="logout">
+
+            <input type="hidden"
+                   name="_csrf"
+                   th:value="${_csrf.token}"
+                   class="csrf-field">
+
+            <button type="submit" class="linkbtn">
+                Logout
+            </button>
+
+        </form>
+
+    </header>
+
+    <div class="dash">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="avatar">♥</div>
+
+            <h3 id="sideName">Donor</h3>
+            <p>Donor</p>
+
+            <a href="/dashboard"
+               data-nav="dashboard">
+                Dashboard
+            </a>
+
+            <a href="/donor/profile"
+               data-nav="profile"
+               aria-current="page">
+                My Profile
+            </a>
+
+            <a href="/donor/availability"
+               data-nav="availability">
+                Update Availability
+            </a>
+
+            <a href="/donor/requests"
+               data-nav="requests">
+                My Requests
+            </a>
+
+            <!-- DONATION HISTORY -->
+            <a href="/donor/donations"
+               data-nav="donations">
+                My Donation History
+            </a>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="dashmain">
+
+            <h2>My Profile</h2>
+
+            <p class="muted">
+                View and update your donor
+                information.
+            </p>
+
+            <!-- PROFILE FORM -->
+            <section class="panel">
+
+                <h3>Personal Information</h3>
+
+                <form id="profileForm"
+                      class="profile-inline">
+
+                    <!-- FULL NAME -->
+                    <label>
+                        Full Name
+
+                        <input type="text"
+                               name="name"
+                               placeholder="Enter full name"
+                               maxlength="100"
+                               autocomplete="name"
+                               required>
+                    </label>
+
+                    <!-- MOBILE NUMBER -->
+                    <label>
+                        Mobile Number
+
+                        <input type="tel"
+                               name="mobile"
+                               inputmode="numeric"
+                               placeholder="Enter 10-digit mobile number"
+                               pattern="[0-9]{10}"
+                               minlength="10"
+                               maxlength="10"
+                               autocomplete="tel-national"
+                               title="Enter exactly 10 digits">
+                    </label>
+
+                    <!-- CITY -->
+                    <label>
+                        City
+
+                        <input type="text"
+                               name="city"
+                               placeholder="Enter your city"
+                               maxlength="100"
+                               autocomplete="address-level2">
+                    </label>
+
+                    <!-- BLOOD GROUP -->
+                    <label>
+                        Blood Group
+
+                        <select name="bloodGroup" required>
+
+                            <option value="">
+                                Select Blood Group
+                            </option>
+
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+
+                        </select>
+                    </label>
+
+                    <!-- SAVE BUTTON -->
+                    <button type="submit" class="btn">
+                        Save Changes
+                    </button>
+
+                    <!-- FEEDBACK -->
+                    <p id="profileMessage"
+                       class="feedback"
+                       role="status"
+                       aria-live="polite"></p>
+
+                </form>
+
+            </section>
+
+            <!-- DONOR INFORMATION -->
+            <section class="panel">
+
+                <h3>Donor Information</h3>
+
+                <p>
+                    <strong>Account Type:</strong>
+                    Blood Donor
+                </p>
+
+                <p class="muted">
+                    Keep your contact details
+                    and blood group accurate.
+                    Incorrect information may
+                    delay emergency blood requests.
+                </p>
+
+                <p class="muted">
+                    Your donation availability
+                    and location can be managed
+                    separately.
+                </p>
+
+                <a class="btn outline"
+                   href="/donor/availability">
+                    Manage Availability
+                </a>
+
+            </section>
+
+            <p class="footnote">
+                Blood group information should
+                match medically verified records.
+                Donation eligibility must be
+                confirmed by qualified
+                healthcare professionals.
+            </p>
+
+        </main>
+
+    </div>
+
+    <!-- EXISTING PROJECT JAVASCRIPT -->
+    <script src="/js/app.js"></script>
+
+</body>
+</html>

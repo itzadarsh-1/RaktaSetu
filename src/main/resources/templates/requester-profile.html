@@ -1,0 +1,495 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>My Profile | RaktaSetu</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <meta name="_csrf" th:content="${_csrf.token}">
+
+    <!-- DAY / NIGHT THEME -->
+    <script src="/js/theme.js" defer></script>
+
+    <style>
+        .account-details {
+            margin-top: 18px;
+            border: 1px solid #e8edf2;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .account-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 18px;
+            border-bottom: 1px solid #e8edf2;
+        }
+
+        .account-row:last-child {
+            border-bottom: none;
+        }
+
+        .account-label {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .account-value {
+            color: #14243a;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .account-status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: #dcfce7;
+            color: #166534;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .account-status.inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        @media (max-width: 600px) {
+            .account-row {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .account-value {
+                text-align: left;
+            }
+        }
+
+        /* PROFILE PHOTO */
+
+        .photo-profile-box {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .photo-preview {
+            width: 110px;
+            height: 110px;
+            min-width: 110px;
+            border-radius: 50%;
+            background: #fee2e2;
+            color: #b91c1c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            overflow: hidden;
+            border: 3px solid #f1f5f9;
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-preview img[hidden] {
+            display: none;
+        }
+
+        .photo-controls {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .photo-controls input {
+            display: block;
+            width: 100%;
+            margin-bottom: 14px;
+        }
+
+        .sidebar .avatar {
+            overflow: hidden;
+        }
+
+        .sidebar .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body data-role="REQUESTER" data-page="profile">
+
+    <!-- HEADER -->
+    <header class="top dashboard-top">
+
+        <!-- ORIGINAL RAKTASETU LOGO -->
+        <a class="logo header-brand" href="/dashboard">
+            <img
+                src="/images/raktasetu-logo.png"
+                alt="RaktaSetu"
+                class="header-brand-logo">
+        </a>
+
+        <span>Requester Portal</span>
+
+        <form method="post"
+              action="/logout"
+              class="logout">
+
+            <input type="hidden"
+                   name="_csrf"
+                   th:value="${_csrf.token}"
+                   class="csrf-field">
+
+            <button type="submit" class="linkbtn">
+                Logout ↗
+            </button>
+
+        </form>
+
+    </header>
+
+    <div class="dash">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="avatar">♥</div>
+
+            <h3 id="sideName">Requester</h3>
+            <p>Requester</p>
+
+            <a href="/dashboard"
+               data-nav="dashboard">
+                Dashboard
+            </a>
+
+            <a href="/dashboard/raise-request"
+               data-nav="raise-request">
+                Raise Request
+            </a>
+
+            <a href="/dashboard/find-donors"
+               data-nav="find-donors">
+                Find Donors
+            </a>
+
+            <a href="/dashboard/my-requests"
+               data-nav="my-requests">
+                My Requests
+            </a>
+
+            <a href="/dashboard/profile"
+               data-nav="profile"
+               aria-current="page">
+                My Profile
+            </a>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="dashmain">
+
+            <h2>My Profile</h2>
+
+            <p class="muted">
+                Manage your personal information
+                and account details.
+            </p>
+
+            <!-- PROFILE PHOTO SECTION -->
+            <section class="panel">
+
+                <h3>Profile Photo</h3>
+
+                <p class="muted">
+                    Upload or change your profile picture.
+                    JPG, PNG or WebP. Maximum 2 MB.
+                </p>
+
+                <div class="photo-profile-box">
+
+                    <div class="photo-preview">
+
+                        <img id="profilePhotoPreview"
+                             alt="Your profile photo"
+                             hidden>
+
+                        <span id="photoPlaceholder">♥</span>
+
+                    </div>
+
+                    <div class="photo-controls">
+
+                        <input type="file"
+                               id="photoFile"
+                               accept="image/jpeg,image/png,image/webp">
+
+                        <div class="actions">
+
+                            <button type="button"
+                                    class="btn"
+                                    id="uploadPhoto">
+                                Upload Photo
+                            </button>
+
+                            <button type="button"
+                                    class="btn outline"
+                                    id="removePhoto">
+                                Remove Photo
+                            </button>
+
+                        </div>
+
+                        <p id="photoMessage"
+                           class="feedback"
+                           role="status"
+                           aria-live="polite"></p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- PERSONAL INFORMATION -->
+            <section class="panel">
+
+                <h3>Personal Information</h3>
+
+                <form id="profileForm"
+                      class="profile-inline">
+
+                    <!-- FULL NAME -->
+                    <label>
+                        Full Name
+
+                        <input type="text"
+                               name="name"
+                               placeholder="Enter your full name"
+                               maxlength="100"
+                               autocomplete="name"
+                               required>
+                    </label>
+
+                    <!-- MOBILE NUMBER -->
+                    <label>
+                        Mobile Number
+
+                        <input type="tel"
+                               name="mobile"
+                               inputmode="numeric"
+                               placeholder="Enter 10-digit mobile number"
+                               pattern="[0-9]{10}"
+                               minlength="10"
+                               maxlength="10"
+                               title="Enter exactly 10 digits"
+                               autocomplete="tel-national">
+                    </label>
+
+                    <!-- CITY -->
+                    <label>
+                        City
+
+                        <input type="text"
+                               name="city"
+                               placeholder="Enter your city"
+                               maxlength="100"
+                               autocomplete="address-level2">
+                    </label>
+
+                    <!-- SAVE BUTTON -->
+                    <button type="submit"
+                            class="btn">
+                        Save Changes
+                    </button>
+
+                    <!-- FEEDBACK MESSAGE -->
+                    <p id="profileMessage"
+                       class="feedback"
+                       role="status"
+                       aria-live="polite"></p>
+
+                </form>
+
+            </section>
+
+            <!-- ACCOUNT INFORMATION -->
+            <section class="panel">
+
+                <h3>Account Information</h3>
+
+                <p class="muted">
+                    Your registered RaktaSetu
+                    account details.
+                </p>
+
+                <div class="account-details">
+
+                    <!-- EMAIL -->
+                    <div class="account-row">
+
+                        <span class="account-label">
+                            Registered Email
+                        </span>
+
+                        <span class="account-value"
+                              id="accountEmail">
+                            Loading...
+                        </span>
+
+                    </div>
+
+                    <!-- ACCOUNT TYPE -->
+                    <div class="account-row">
+
+                        <span class="account-label">
+                            Account Type
+                        </span>
+
+                        <span class="account-value"
+                              id="accountRole">
+                            Requester
+                        </span>
+
+                    </div>
+
+                    <!-- ACCOUNT STATUS -->
+                    <div class="account-row">
+
+                        <span class="account-label">
+                            Account Status
+                        </span>
+
+                        <span class="account-status"
+                              id="accountStatus">
+                            Loading...
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- PRIVACY NOTICE -->
+            <p class="footnote">
+                Your contact information may be used
+                to coordinate blood requests.
+                Share personal details only
+                when necessary.
+            </p>
+
+        </main>
+
+    </div>
+
+    <!-- EXISTING PROJECT JAVASCRIPT -->
+    <script src="/js/app.js"></script>
+
+    <!-- ACCOUNT INFORMATION LOADER -->
+    <script>
+        document.addEventListener(
+            "DOMContentLoaded",
+            async function () {
+
+                const emailElement =
+                    document.getElementById("accountEmail");
+
+                const roleElement =
+                    document.getElementById("accountRole");
+
+                const statusElement =
+                    document.getElementById("accountStatus");
+
+                try {
+
+                    const response = await fetch("/api/me", {
+                        method: "GET",
+                        credentials: "same-origin",
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(
+                            "Unable to load account details"
+                        );
+                    }
+
+                    const user = await response.json();
+
+                    emailElement.textContent =
+                        user.email || "Not available";
+
+                    roleElement.textContent =
+                        user.role === "REQUESTER"
+                            ? "Requester"
+                            : (user.role || "Not available");
+
+                    if (user.enabled === true) {
+
+                        statusElement.textContent = "Active";
+
+                        statusElement.classList.remove(
+                            "inactive"
+                        );
+
+                    } else if (user.enabled === false) {
+
+                        statusElement.textContent = "Disabled";
+
+                        statusElement.classList.add(
+                            "inactive"
+                        );
+
+                    } else {
+
+                        statusElement.textContent =
+                            "Not available";
+                    }
+
+                } catch (error) {
+
+                    console.error(
+                        "Account details error:",
+                        error
+                    );
+
+                    emailElement.textContent =
+                        "Unable to load";
+
+                    statusElement.textContent =
+                        "Unavailable";
+
+                    statusElement.classList.add(
+                        "inactive"
+                    );
+                }
+            }
+        );
+    </script>
+
+</body>
+</html>

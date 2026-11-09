@@ -1,1 +1,299 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Register | RaktaSetu</title><link rel="stylesheet" href="/css/style.css"><meta name="_csrf" th:content="${_csrf.token}"></head><body><header class="top"><a class="logo" href="/">🩸 <span>RaktaSetu</span></a><a href="/login">Login</a></header><main class="auth-layout"><section class="auth-card"><h2>Create Your Account</h2><p>Join RaktaSetu and be a part of the lifesaving community.</p><form id="registerForm"><div class="tabs"><label><input type="radio" name="role" value="DONOR" checked> Donor</label><label><input type="radio" name="role" value="REQUESTER"> Requester</label></div><label>Full Name<input required name="name" placeholder="Enter your full name"></label><label>Email<input required name="email" type="email" placeholder="Enter your email"></label><label>Mobile Number<input name="mobile" inputmode="tel" placeholder="Mobile number"></label><label>City<input required name="city" placeholder="e.g. Dehradun"></label><label>State<input name="state" placeholder="e.g. Uttarakhand"></label><label id="bloodField">Blood Group<select name="bloodGroup"><option value="">Select blood group</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></label><label>Password (at least 8 characters)<input required minlength="8" type="password" name="password"></label><label>Confirm Password<input required minlength="8" type="password" name="confirm"></label><button type="submit" class="btn full">Register</button><p id="message" class="feedback" role="status"></p></form><p class="center">Already have an account? <a href="/login">Login</a></p></section><aside class="auth-side"><div class="side-icon">🩸</div><h2>Donate Blood<br>Save Lives</h2><p>“A small act of kindness can make a big difference.”</p></aside></main><script src="/js/app.js"></script></body></html>
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Register | RaktaSetu</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <meta name="_csrf" th:content="${_csrf.token}">
+
+    <!-- Day / Night Mode -->
+    <script src="/js/theme.js" defer></script>
+
+</head>
+
+<body>
+
+    <!-- =====================================
+         HEADER
+         ===================================== -->
+
+    <header class="top register-header">
+
+        <!-- New RaktaSetu Logo -->
+        <a href="/"
+           class="logo register-logo"
+           aria-label="RaktaSetu Home">
+
+            <img
+                src="/images/raktasetu-logo.png"
+                alt="RaktaSetu - Connect Donate Save Lives"
+                class="register-header-logo">
+
+        </a>
+
+        <!-- Header Actions -->
+        <div class="navright register-nav-actions">
+
+            <!-- Day / Night Toggle -->
+            <button
+                id="themeToggle"
+                type="button"
+                class="theme-toggle"
+                aria-label="Switch theme"
+                title="Switch theme">
+
+                🌙
+
+            </button>
+
+            <!-- Login -->
+            <a href="/login"
+               class="register-login-link">
+
+                Login
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================
+         REGISTRATION PAGE
+         ===================================== -->
+
+    <main class="auth-layout">
+
+        <!-- LEFT SIDE: REGISTRATION FORM -->
+        <section class="auth-card">
+
+            <h2>Create Your Account</h2>
+
+            <p>
+                Join RaktaSetu and be a part of
+                the lifesaving community.
+            </p>
+
+
+            <form id="registerForm">
+
+                <!-- SELECT ACCOUNT TYPE -->
+                <div class="tabs">
+
+                    <label>
+                        <input
+                            type="radio"
+                            name="role"
+                            value="DONOR"
+                            checked>
+
+                        Donor
+                    </label>
+
+                    <label>
+                        <input
+                            type="radio"
+                            name="role"
+                            value="REQUESTER">
+
+                        Requester
+                    </label>
+
+                </div>
+
+
+                <!-- FULL NAME -->
+                <label>
+                    Full Name
+
+                    <input
+                        required
+                        type="text"
+                        name="name"
+                        autocomplete="name"
+                        placeholder="Enter your full name">
+                </label>
+
+
+                <!-- EMAIL -->
+                <label>
+                    Email
+
+                    <input
+                        required
+                        type="email"
+                        name="email"
+                        autocomplete="email"
+                        placeholder="Enter your email">
+                </label>
+
+
+                <!-- MOBILE NUMBER -->
+                <label>
+                    Mobile Number
+
+                    <input
+                        type="tel"
+                        name="mobile"
+                        inputmode="tel"
+                        autocomplete="tel"
+                        placeholder="Mobile number">
+                </label>
+
+
+                <!-- CITY -->
+                <label>
+                    City
+
+                    <input
+                        required
+                        type="text"
+                        name="city"
+                        autocomplete="address-level2"
+                        placeholder="e.g. Dehradun">
+                </label>
+
+
+                <!-- STATE -->
+                <label>
+                    State
+
+                    <input
+                        type="text"
+                        name="state"
+                        autocomplete="address-level1"
+                        placeholder="e.g. Uttarakhand">
+                </label>
+
+
+                <!-- BLOOD GROUP -->
+                <label id="bloodField">
+
+                    Blood Group
+
+                    <select name="bloodGroup">
+
+                        <option value="">
+                            Select blood group
+                        </option>
+
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+
+                    </select>
+
+                </label>
+
+
+                <!-- PASSWORD -->
+                <label>
+                    Password
+
+                    <input
+                        required
+                        type="password"
+                        name="password"
+                        maxlength="128"
+                        autocomplete="new-password"
+                        placeholder="Create your password">
+                </label>
+
+
+                <!-- CONFIRM PASSWORD -->
+                <label>
+                    Confirm Password
+
+                    <input
+                        required
+                        type="password"
+                        name="confirm"
+                        maxlength="128"
+                        autocomplete="new-password"
+                        placeholder="Confirm your password">
+                </label>
+
+
+                <!-- REGISTER BUTTON -->
+                <button
+                    type="submit"
+                    class="btn full">
+
+                    Register
+
+                </button>
+
+
+                <!-- REGISTRATION MESSAGE -->
+                <p
+                    id="message"
+                    class="feedback"
+                    role="status"
+                    aria-live="polite">
+                </p>
+
+            </form>
+
+
+            <!-- LOGIN LINK -->
+            <p class="center">
+
+                Already have an account?
+
+                <a href="/login">
+                    Login
+                </a>
+
+            </p>
+
+        </section>
+
+
+        <!-- =====================================
+             RIGHT SIDE
+             ===================================== -->
+
+        <aside class="auth-side">
+
+            <div class="side-icon">
+                🩸
+            </div>
+
+            <h2>
+                Donate Blood
+                <br>
+                Save Lives
+            </h2>
+
+            <p>
+                “A small act of kindness
+                can make a big difference.”
+            </p>
+
+        </aside>
+
+    </main>
+
+
+    <script src="/js/app.js" defer></script>
+
+</body>
+
+</html>

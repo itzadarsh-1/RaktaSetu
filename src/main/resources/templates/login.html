@@ -1,1 +1,231 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login | RaktaSetu</title><link rel="stylesheet" href="/css/style.css"><meta name="_csrf" th:content="${_csrf.token}"></head><body><header class="top"><a class="logo" href="/">🩸 <span>RaktaSetu</span></a><a href="/register">Register</a></header><main class="auth-layout"><section class="auth-card"><h2>Welcome Back</h2><p>Login to your account</p><form method="post" action="/perform-login"><div class="tabs muted"><span>Donor</span><span>Requester</span><span>Admin</span></div><label>Email<input required name="email" type="email" placeholder="Enter your email"></label><label>Password<input required name="password" type="password" placeholder="Enter your password"></label><input id="csrfLogin" type="hidden" name="_csrf" th:value="${_csrf.token}"><p class="feedback" id="loginStatus"></p><button class="btn full" type="submit">Login</button></form><p class="center">Don't have an account? <a href="/register">Register</a></p></section><aside class="auth-side"><div class="side-icon">♥</div><h2>Need Blood?<br>We are here to help.</h2><p>Find donors near you or register to donate blood.</p></aside></main><script src="/js/app.js"></script></body></html>
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Login | RaktaSetu</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <meta name="_csrf" th:content="${_csrf.token}">
+
+    <script src="/js/theme.js" defer></script>
+</head>
+
+<body class="login-page">
+
+    <!-- HEADER -->
+    <header class="top login-header">
+
+        <a href="/" class="logo login-brand">
+            <img src="/images/raktasetu-logo.png"
+                 alt="RaktaSetu"
+                 class="login-brand-image">
+        </a>
+
+        <div class="navright login-header-actions">
+            <a href="/register" class="login-register-link">
+                Register
+            </a>
+        </div>
+
+    </header>
+
+    <!-- LOGIN CONTENT -->
+    <main class="auth-layout login-layout">
+
+        <!-- LEFT SIDE -->
+        <section class="auth-card login-form-section">
+
+            <div class="login-form-inner">
+
+                <h2>Welcome Back</h2>
+                <p class="login-subtitle">
+                    Login to your account
+                </p>
+
+                <!-- Role labels: authentication is
+                     still handled by Spring Security -->
+                <div class="login-role-tabs" aria-label="Account types">
+
+                    <span class="login-role">
+                        <span aria-hidden="true">♙</span>
+                        Donor
+                    </span>
+
+                    <span class="login-role">
+                        <span aria-hidden="true">♡</span>
+                        Requester
+                    </span>
+
+                    <span class="login-role">
+                        <span aria-hidden="true">♢</span>
+                        Admin
+                    </span>
+
+                </div>
+
+                <form method="post"
+                      action="/perform-login"
+                      class="login-form">
+
+                    <label for="loginEmail">Email</label>
+
+                    <div class="login-input-wrap">
+                        <span class="login-input-icon"
+                              aria-hidden="true">✉</span>
+
+                        <input
+                            id="loginEmail"
+                            type="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            autocomplete="username"
+                            required>
+                    </div>
+
+                    <label for="loginPassword">Password</label>
+
+                    <div class="login-input-wrap">
+                        <span class="login-input-icon"
+                              aria-hidden="true">♙</span>
+
+                        <input
+                            id="loginPassword"
+                            type="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required>
+
+                        <button
+                            type="button"
+                            id="showPassword"
+                            class="password-toggle"
+                            aria-label="Show password"
+                            aria-pressed="false">
+                            Show
+                        </button>
+                    </div>
+
+                    <!-- Spring Security CSRF -->
+                    <input
+                        id="csrfLogin"
+                        type="hidden"
+                        name="_csrf"
+                        th:value="${_csrf.token}">
+
+                    <p id="loginStatus"
+                       class="feedback"
+                       role="status"
+                       aria-live="polite"></p>
+
+                    <p class="feedback"
+                       th:if="${param.reset}">
+                        Password updated. Please log in
+                        with your new password.
+                    </p>
+
+                    <div class="login-forgot">
+                        <a href="/forgot-password">
+                            Forgot Password?
+                        </a>
+                    </div>
+
+                    <button type="submit"
+                            class="btn login-submit">
+                        Login
+                        <span aria-hidden="true">→</span>
+                    </button>
+
+                </form>
+
+                <p class="login-signup">
+                    Don't have an account?
+                    <a href="/register">Register</a>
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- RIGHT SIDE -->
+        <aside class="auth-side login-info-section">
+
+            <div class="login-info-inner">
+
+                <div class="login-illustration"
+                     aria-hidden="true">
+                    <span class="login-blood-icon">♥</span>
+                    <span class="login-pulse">＋</span>
+                </div>
+
+                <h2>
+                    <span>Need Blood?</span>
+                    We are here to help.
+                </h2>
+
+                <p>
+                    Find donors near you or register
+                    to donate blood.
+                </p>
+
+                <div class="login-info-features">
+
+                    <div>
+                        <span aria-hidden="true">♡</span>
+                        <strong>Find Donors</strong>
+                    </div>
+
+                    <div>
+                        <span aria-hidden="true">＋</span>
+                        <strong>Request Blood</strong>
+                    </div>
+
+                    <div>
+                        <span aria-hidden="true">♧</span>
+                        <strong>Support Community</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </main>
+
+    <script src="/js/app.js"></script>
+
+    <script>
+        const passwordInput =
+            document.getElementById('loginPassword');
+
+        const passwordButton =
+            document.getElementById('showPassword');
+
+        passwordButton.addEventListener('click', function () {
+            const isHidden =
+                passwordInput.type === 'password';
+
+            passwordInput.type =
+                isHidden ? 'text' : 'password';
+
+            passwordButton.textContent =
+                isHidden ? 'Hide' : 'Show';
+
+            passwordButton.setAttribute(
+                'aria-label',
+                isHidden ? 'Hide password' : 'Show password'
+            );
+
+            passwordButton.setAttribute(
+                'aria-pressed',
+                String(isHidden)
+            );
+        });
+    </script>
+
+</body>
+</html>

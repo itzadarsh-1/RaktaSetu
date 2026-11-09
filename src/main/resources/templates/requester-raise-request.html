@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Raise Blood Request | RaktaSetu</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <meta name="_csrf" th:content="${_csrf.token}">
+
+    <!-- SAME THEME SCRIPT AS DASHBOARD -->
+    <script src="/js/theme.js" defer></script>
+</head>
+
+<body data-role="REQUESTER" data-page="raise-request">
+
+    <!-- HEADER -->
+    <header class="top dashboard-top">
+
+        <!-- ORIGINAL RAKTASETU LOGO -->
+        <a class="logo header-brand" href="/dashboard">
+            <img
+                src="/images/raktasetu-logo.png"
+                alt="RaktaSetu"
+                class="header-brand-logo">
+        </a>
+
+        <span>Requester Portal</span>
+
+        <form method="post" action="/logout" class="logout">
+
+            <input
+                type="hidden"
+                name="_csrf"
+                th:value="${_csrf.token}"
+                class="csrf-field">
+
+            <button type="submit" class="linkbtn">
+                Logout ↗
+            </button>
+
+        </form>
+
+    </header>
+
+    <div class="dash">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="avatar">♥</div>
+
+            <h3 id="sideName">Requester</h3>
+            <p>Requester</p>
+
+            <a href="/dashboard"
+               data-nav="dashboard">
+                Dashboard
+            </a>
+
+            <a href="/dashboard/raise-request"
+               data-nav="raise-request"
+               aria-current="page">
+                Raise Request
+            </a>
+
+            <a href="/dashboard/find-donors"
+               data-nav="find-donors">
+                Find Donors
+            </a>
+
+            <a href="/dashboard/my-requests"
+               data-nav="my-requests">
+                My Requests
+            </a>
+
+            <a href="/dashboard/profile"
+               data-nav="profile">
+                My Profile
+            </a>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="dashmain">
+
+            <h2>Raise Emergency Blood Request</h2>
+
+            <p class="muted">
+                Fill in the details below to request blood
+                from available donors.
+            </p>
+
+            <section class="panel">
+
+                <h3>Blood Request Details</h3>
+
+                <form id="requestForm" class="stack">
+
+                    <!-- BLOOD GROUP -->
+                    <label>
+                        Blood Group Required
+
+                        <select name="bloodGroup" required>
+                            <option value="">
+                                Select blood group
+                            </option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </label>
+
+                    <!-- UNITS REQUIRED -->
+                    <label>
+                        Units Required
+
+                        <input type="number"
+                               name="unitsRequired"
+                               min="1"
+                               max="20"
+                               value="1"
+                               required>
+                    </label>
+
+                    <!-- HOSPITAL -->
+                    <label>
+                        Hospital Name
+
+                        <input type="text"
+                               name="hospital"
+                               placeholder="Enter hospital name">
+                    </label>
+
+                    <!-- CITY -->
+                    <label>
+                        Location (City)
+
+                        <input type="text"
+                               name="city"
+                               placeholder="Enter city"
+                               required>
+                    </label>
+
+                    <!-- MOBILE NUMBER -->
+                    <label>
+                        Contact Mobile Number
+
+                        <input type="tel"
+                               name="phone"
+                               inputmode="numeric"
+                               placeholder="Enter 10-digit mobile number"
+                               pattern="[0-9]{10}"
+                               minlength="10"
+                               maxlength="10"
+                               title="Enter exactly 10 digits"
+                               oninput="this.value=this.value.replace(/\D/g,'').slice(0,10)"
+                               required>
+                    </label>
+
+                    <!-- URGENCY -->
+                    <label>
+                        Urgency Level
+
+                        <select name="urgency" required>
+                            <option value="EMERGENCY">
+                                Emergency
+                            </option>
+                            <option value="NORMAL">
+                                Normal
+                            </option>
+                        </select>
+                    </label>
+
+                    <!-- MESSAGE -->
+                    <label>
+                        Additional Message
+
+                        <textarea name="message"
+                                  rows="4"
+                                  placeholder="Enter additional details (optional)"></textarea>
+                    </label>
+
+                    <!-- SUBMIT BUTTON -->
+                    <button type="submit"
+                            class="btn full">
+                        Submit Blood Request
+                    </button>
+
+                    <!-- FEEDBACK -->
+                    <p id="requestMessage"
+                       class="feedback"
+                       role="status"
+                       aria-live="polite"></p>
+
+                </form>
+
+            </section>
+
+            <p class="footnote">
+                Important: Blood compatibility and donor
+                eligibility must be verified by qualified
+                medical professionals.
+            </p>
+
+        </main>
+
+    </div>
+
+    <!-- EXISTING PROJECT JAVASCRIPT -->
+    <script src="/js/app.js"></script>
+
+</body>
+</html>

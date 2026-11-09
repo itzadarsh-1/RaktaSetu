@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>My Blood Requests | RaktaSetu</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <meta name="_csrf" th:content="${_csrf.token}">
+
+    <!-- DAY / NIGHT THEME -->
+    <script src="/js/theme.js" defer></script>
+</head>
+
+<body data-role="REQUESTER" data-page="my-requests">
+
+    <!-- HEADER -->
+    <header class="top dashboard-top">
+
+        <!-- ORIGINAL RAKTASETU LOGO -->
+        <a class="logo header-brand" href="/dashboard">
+            <img
+                src="/images/raktasetu-logo.png"
+                alt="RaktaSetu"
+                class="header-brand-logo">
+        </a>
+
+        <span>Requester Portal</span>
+
+        <form method="post"
+              action="/logout"
+              class="logout">
+
+            <input type="hidden"
+                   name="_csrf"
+                   th:value="${_csrf.token}"
+                   class="csrf-field">
+
+            <button type="submit" class="linkbtn">
+                Logout ↗
+            </button>
+
+        </form>
+
+    </header>
+
+    <div class="dash">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="avatar">♥</div>
+
+            <h3 id="sideName">Requester</h3>
+            <p>Requester</p>
+
+            <a href="/dashboard"
+               data-nav="dashboard">
+                Dashboard
+            </a>
+
+            <a href="/dashboard/raise-request"
+               data-nav="raise-request">
+                Raise Request
+            </a>
+
+            <a href="/dashboard/find-donors"
+               data-nav="find-donors">
+                Find Donors
+            </a>
+
+            <a href="/dashboard/my-requests"
+               data-nav="my-requests"
+               aria-current="page">
+                My Requests
+            </a>
+
+            <a href="/dashboard/profile"
+               data-nav="profile">
+                My Profile
+            </a>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="dashmain">
+
+            <h2>My Blood Requests</h2>
+
+            <p class="muted">
+                View your blood request history
+                and track the current status.
+            </p>
+
+            <!-- REQUEST STATISTICS -->
+            <section class="statgrid">
+
+                <div class="stat">
+                    <small>Total Requests</small>
+                    <b id="statTotal">0</b>
+                </div>
+
+                <div class="stat">
+                    <small>Pending Requests</small>
+                    <b id="statPending">0</b>
+                </div>
+
+                <div class="stat">
+                    <small>Accepted Requests</small>
+                    <b id="statAccepted">0</b>
+                </div>
+
+            </section>
+
+            <!-- REQUEST HISTORY -->
+            <section class="panel">
+
+                <div class="request-header">
+
+                    <h3>Request History</h3>
+
+                    <div class="actions">
+
+                        <!-- PDF DOWNLOAD -->
+                        <a class="btn outline"
+                           href="/api/requester/requests/report"
+                           id="downloadRequestReport">
+                            Download PDF Report
+                        </a>
+
+                        <!-- NEW REQUEST -->
+                        <a class="btn"
+                           href="/dashboard/raise-request">
+                            + New Request
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <p class="muted">
+                    View all your submitted blood requests,
+                    assigned donors and current status.
+                </p>
+
+                <!-- REQUEST LIST -->
+                <div id="requestList"
+                     class="stack results"
+                     aria-live="polite">
+
+                    <p class="muted">
+                        Loading your requests...
+                    </p>
+
+                </div>
+
+            </section>
+
+            <!-- IMPORTANT NOTICE -->
+            <p class="footnote">
+                Blood donation arrangements and medical
+                eligibility must be confirmed with
+                the hospital or qualified medical staff.
+                Downloaded reports are RaktaSetu request
+                records, not hospital-issued certificates.
+            </p>
+
+        </main>
+
+    </div>
+
+    <!-- EXISTING PROJECT JAVASCRIPT -->
+    <script src="/js/app.js"></script>
+
+</body>
+</html>

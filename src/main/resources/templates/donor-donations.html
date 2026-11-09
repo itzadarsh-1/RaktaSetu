@@ -1,0 +1,622 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="_csrf" th:content="${_csrf.token}">
+
+    <title>Donation History | RaktaSetu</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <!-- DAY / NIGHT THEME -->
+    <script src="/js/theme.js" defer></script>
+
+    <style>
+        .donation-page {
+            padding: 28px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .donation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+
+        .donation-header h1 {
+            margin-bottom: 6px;
+        }
+
+        .donation-header p {
+            opacity: 0.75;
+        }
+
+        .donation-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .donation-btn {
+            border: 0;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #dc2626;
+            color: white;
+        }
+
+        .donation-btn.secondary {
+            background: #374151;
+        }
+
+        .donation-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .donation-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .donation-card,
+        .donation-history {
+            background: var(--card-bg, #ffffff);
+            color: var(--text-color, #111827);
+            border: 1px solid var(--border-color, #e5e7eb);
+            border-radius: 12px;
+            padding: 22px;
+        }
+
+        .donation-card .stat-label {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 12px;
+        }
+
+        .donation-card .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .donation-history h2 {
+            margin-bottom: 18px;
+        }
+
+        .donation-table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .donation-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        .donation-table th,
+        .donation-table td {
+            text-align: left;
+            padding: 14px 12px;
+            border-bottom: 1px solid #d1d5db;
+        }
+
+        .donation-table th {
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .verified-badge {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .donation-message {
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+        .donation-note {
+            margin-top: 18px;
+            font-size: 13px;
+            opacity: 0.75;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 700px) {
+            .donation-page {
+                padding: 16px;
+            }
+
+            .donation-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body data-role="DONOR" data-page="donations">
+
+    <!-- HEADER -->
+    <header class="top dashboard-top">
+
+        <!-- ORIGINAL RAKTASETU LOGO -->
+        <a class="logo header-brand" href="/dashboard">
+            <img
+                src="/images/raktasetu-logo.png"
+                alt="RaktaSetu"
+                class="header-brand-logo">
+        </a>
+
+        <span>Donor Portal</span>
+
+        <form method="post"
+              action="/logout"
+              class="logout">
+
+            <input type="hidden"
+                   name="_csrf"
+                   th:value="${_csrf.token}"
+                   class="csrf-field">
+
+            <button type="submit" class="linkbtn">
+                Logout
+            </button>
+
+        </form>
+
+    </header>
+
+    <div class="dash">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="avatar">♥</div>
+
+            <h3 id="sideName">Donor</h3>
+            <p>Donor</p>
+
+            <a href="/dashboard"
+               data-nav="dashboard">
+                Dashboard
+            </a>
+
+            <a href="/donor/profile"
+               data-nav="profile">
+                My Profile
+            </a>
+
+            <a href="/donor/availability"
+               data-nav="availability">
+                Update Availability
+            </a>
+
+            <a href="/donor/requests"
+               data-nav="requests">
+                My Requests
+            </a>
+
+            <a href="/donor/donations"
+               data-nav="donations"
+               aria-current="page">
+                My Donation History
+            </a>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="dashmain">
+
+            <div class="donation-page">
+
+                <!-- PAGE HEADER -->
+                <div class="donation-header">
+
+                    <div>
+                        <h1>My Blood Donation History</h1>
+
+                        <p>
+                            View your verified donations
+                            and download your report.
+                        </p>
+                    </div>
+
+                    <div class="donation-actions">
+
+                        <button
+                            class="donation-btn secondary"
+                            type="button"
+                            id="refreshBtn">
+                            Refresh
+                        </button>
+
+                        <button
+                            class="donation-btn"
+                            type="button"
+                            id="downloadReportBtn">
+                            Download PDF Report
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!-- STATUS MESSAGE -->
+                <div id="donationMessage"
+                     class="donation-message"
+                     role="status">
+                    Loading donation information...
+                </div>
+
+                <!-- DONATION STATISTICS -->
+                <section class="donation-stats">
+
+                    <div class="donation-card">
+                        <div class="stat-label">
+                            Donor Name
+                        </div>
+
+                        <div class="stat-value"
+                             id="donorName"
+                             style="font-size: 20px;">
+                            --
+                        </div>
+                    </div>
+
+                    <div class="donation-card">
+                        <div class="stat-label">
+                            Total Donations
+                        </div>
+
+                        <div class="stat-value"
+                             id="totalDonations">
+                            0
+                        </div>
+                    </div>
+
+                    <div class="donation-card">
+                        <div class="stat-label">
+                            Total Blood Donated
+                        </div>
+
+                        <div class="stat-value"
+                             id="totalBloodMl">
+                            0 mL
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- VERIFIED DONATION HISTORY -->
+                <section class="donation-history">
+
+                    <h2>Verified Donation Records</h2>
+
+                    <div class="donation-table-wrap">
+
+                        <table class="donation-table">
+
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Donation Date</th>
+                                    <th>Quantity</th>
+                                    <th>Hospital</th>
+                                    <th>City</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="donationTableBody">
+                                <tr>
+                                    <td colspan="6">
+                                        Loading records...
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <p class="donation-note">
+                        Only admin-verified donation records
+                        are displayed. The downloaded report
+                        summarizes records stored in RaktaSetu
+                        and is not a hospital-issued medical
+                        certificate.
+                    </p>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- EXISTING DONATION HISTORY JAVASCRIPT -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const donorName =
+                document.getElementById("donorName");
+
+            const totalDonations =
+                document.getElementById("totalDonations");
+
+            const totalBloodMl =
+                document.getElementById("totalBloodMl");
+
+            const tableBody =
+                document.getElementById("donationTableBody");
+
+            const message =
+                document.getElementById("donationMessage");
+
+            const downloadBtn =
+                document.getElementById("downloadReportBtn");
+
+            const refreshBtn =
+                document.getElementById("refreshBtn");
+
+            function setMessage(text, isError = false) {
+                message.textContent = text;
+                message.style.color =
+                    isError ? "#dc2626" : "";
+            }
+
+            function createCell(row, value) {
+                const cell = document.createElement("td");
+                cell.textContent = value ?? "--";
+                row.appendChild(cell);
+                return cell;
+            }
+
+            async function getJson(url) {
+
+                const response = await fetch(url, {
+                    credentials: "same-origin",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(
+                        "HTTP " + response.status +
+                        " while loading " + url
+                    );
+                }
+
+                return response.json();
+            }
+
+            async function loadDonations() {
+
+                refreshBtn.disabled = true;
+
+                setMessage(
+                    "Loading donation information..."
+                );
+
+                try {
+
+                    const [summary, records] =
+                        await Promise.all([
+                            getJson(
+                                "/api/donor/donations/summary"
+                            ),
+                            getJson(
+                                "/api/donor/donations"
+                            )
+                        ]);
+
+                    donorName.textContent =
+                        summary.donorName || "Donor";
+
+                    totalDonations.textContent =
+                        summary.totalDonations ?? 0;
+
+                    totalBloodMl.textContent =
+                        (summary.totalBloodMl ?? 0) + " mL";
+
+                    tableBody.replaceChildren();
+
+                    if (!Array.isArray(records) ||
+                        records.length === 0) {
+
+                        const row =
+                            document.createElement("tr");
+
+                        createCell(
+                            row,
+                            "No verified donations found."
+                        );
+
+                        row.firstChild.colSpan = 6;
+
+                        tableBody.appendChild(row);
+
+                        setMessage(
+                            "No verified donation records available."
+                        );
+
+                        return;
+                    }
+
+                    records.forEach((donation, index) => {
+
+                        const row =
+                            document.createElement("tr");
+
+                        createCell(row, index + 1);
+
+                        createCell(
+                            row,
+                            donation.donationDate
+                        );
+
+                        createCell(
+                            row,
+                            donation.quantityMl + " mL"
+                        );
+
+                        createCell(
+                            row,
+                            donation.hospital || "--"
+                        );
+
+                        createCell(
+                            row,
+                            donation.city || "--"
+                        );
+
+                        const statusCell =
+                            document.createElement("td");
+
+                        const badge =
+                            document.createElement("span");
+
+                        badge.className =
+                            "verified-badge";
+
+                        badge.textContent =
+                            donation.status || "VERIFIED";
+
+                        statusCell.appendChild(badge);
+
+                        row.appendChild(statusCell);
+
+                        tableBody.appendChild(row);
+                    });
+
+                    setMessage(
+                        records.length +
+                        " verified donation record(s) loaded."
+                    );
+
+                } catch (error) {
+
+                    tableBody.replaceChildren();
+
+                    const row =
+                        document.createElement("tr");
+
+                    const cell = createCell(
+                        row,
+                        "Unable to load donation records."
+                    );
+
+                    cell.colSpan = 6;
+
+                    tableBody.appendChild(row);
+
+                    setMessage(error.message, true);
+
+                } finally {
+
+                    refreshBtn.disabled = false;
+                }
+            }
+
+            async function downloadReport() {
+
+                downloadBtn.disabled = true;
+
+                downloadBtn.textContent =
+                    "Preparing PDF...";
+
+                try {
+
+                    const response = await fetch(
+                        "/api/donor/donations/report",
+                        {
+                            credentials: "same-origin"
+                        }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error(
+                            "PDF download failed. HTTP " +
+                            response.status
+                        );
+                    }
+
+                    const blob = await response.blob();
+
+                    const url =
+                        URL.createObjectURL(blob);
+
+                    const link =
+                        document.createElement("a");
+
+                    link.href = url;
+
+                    link.download =
+                        "raktasetu-donation-report.pdf";
+
+                    document.body.appendChild(link);
+
+                    link.click();
+
+                    link.remove();
+
+                    URL.revokeObjectURL(url);
+
+                    setMessage(
+                        "PDF report downloaded."
+                    );
+
+                } catch (error) {
+
+                    setMessage(error.message, true);
+
+                } finally {
+
+                    downloadBtn.disabled = false;
+
+                    downloadBtn.textContent =
+                        "Download PDF Report";
+                }
+            }
+
+            refreshBtn.addEventListener(
+                "click",
+                loadDonations
+            );
+
+            downloadBtn.addEventListener(
+                "click",
+                downloadReport
+            );
+
+            loadDonations();
+
+        });
+    </script>
+
+</body>
+</html>

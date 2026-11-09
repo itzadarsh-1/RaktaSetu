@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Manage Users | RaktaSetu</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <meta name="_csrf" th:content="${_csrf.token}">
+
+    <!-- DAY / NIGHT THEME -->
+    <script src="/js/theme.js" defer></script>
+</head>
+
+<body data-role="ADMIN" data-page="users">
+
+    <!-- HEADER -->
+    <header class="top dashboard-top">
+
+        <!-- ORIGINAL RAKTASETU LOGO -->
+        <a class="logo header-brand" href="/dashboard">
+            <img
+                src="/images/raktasetu-logo.png"
+                alt="RaktaSetu"
+                class="header-brand-logo">
+        </a>
+
+        <span>Admin Dashboard</span>
+
+        <form method="post"
+              action="/logout"
+              class="logout">
+
+            <input type="hidden"
+                   name="_csrf"
+                   th:value="${_csrf.token}"
+                   class="csrf-field">
+
+            <button type="submit"
+                    class="linkbtn">
+                Logout
+            </button>
+
+        </form>
+
+    </header>
+
+    <div class="dash">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="avatar">♡</div>
+
+            <h3 id="sideName">Admin</h3>
+
+            <p>Administrator</p>
+
+            <a href="/dashboard"
+               data-nav="dashboard">
+                Dashboard
+            </a>
+
+            <a href="/admin/users"
+               data-nav="users"
+               class="active"
+               aria-current="page">
+                Manage Users
+            </a>
+
+            <a href="/admin/requests"
+               data-nav="requests">
+                Blood Requests
+            </a>
+
+            <!-- DONATION MANAGEMENT -->
+            <a href="/admin/donations"
+               data-nav="donations">
+                Manage Donations
+            </a>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="dashmain">
+
+            <h2>Manage Users</h2>
+
+            <p class="muted">
+                View and manage registered
+                RaktaSetu users.
+            </p>
+
+            <!-- USERS TABLE -->
+            <section class="panel">
+
+                <h3>Registered Users</h3>
+
+                <p class="muted">
+                    View donor and requester accounts
+                    and manage their access.
+                </p>
+
+                <!--
+                    JavaScript loads the users table
+                    inside this container.
+                -->
+
+                <div id="usersList"
+                     class="results"
+                     aria-live="polite">
+
+                    <p class="muted">
+                        Loading users...
+                    </p>
+
+                </div>
+
+                <p id="adminUserMessage"
+                   class="feedback"
+                   role="status"
+                   aria-live="polite"></p>
+
+            </section>
+
+            <p class="footnote">
+                RaktaSetu Administration Panel
+            </p>
+
+        </main>
+
+    </div>
+
+    <!-- EXISTING JAVASCRIPT -->
+    <script src="/js/app.js"></script>
+
+</body>
+</html>

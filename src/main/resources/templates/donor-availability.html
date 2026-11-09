@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Update Availability | RaktaSetu</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <meta name="_csrf" th:content="${_csrf.token}">
+
+    <!-- DAY / NIGHT THEME -->
+    <script src="/js/theme.js" defer></script>
+</head>
+
+<body data-role="DONOR" data-page="availability">
+
+    <!-- HEADER -->
+    <header class="top dashboard-top">
+
+        <!-- ORIGINAL RAKTASETU LOGO -->
+        <a class="logo header-brand" href="/dashboard">
+            <img
+                src="/images/raktasetu-logo.png"
+                alt="RaktaSetu"
+                class="header-brand-logo">
+        </a>
+
+        <span>Donor Portal</span>
+
+        <form method="post"
+              action="/logout"
+              class="logout">
+
+            <input type="hidden"
+                   name="_csrf"
+                   th:value="${_csrf.token}"
+                   class="csrf-field">
+
+            <button type="submit" class="linkbtn">
+                Logout
+            </button>
+
+        </form>
+
+    </header>
+
+    <div class="dash">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="avatar">♥</div>
+
+            <h3 id="sideName">Donor</h3>
+            <p>Donor</p>
+
+            <a href="/dashboard"
+               data-nav="dashboard">
+                Dashboard
+            </a>
+
+            <a href="/donor/profile"
+               data-nav="profile">
+                My Profile
+            </a>
+
+            <a href="/donor/availability"
+               data-nav="availability"
+               aria-current="page">
+                Update Availability
+            </a>
+
+            <a href="/donor/requests"
+               data-nav="requests">
+                My Requests
+            </a>
+
+            <!-- DONATION HISTORY -->
+            <a href="/donor/donations"
+               data-nav="donations">
+                My Donation History
+            </a>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="dashmain">
+
+            <h2>Update Availability</h2>
+
+            <p class="muted">
+                Manage your donation availability
+                and optional location sharing.
+            </p>
+
+            <!-- AVAILABILITY PANEL -->
+            <section class="panel">
+
+                <h3>Your Donation Availability</h3>
+
+                <p class="muted">
+                    Turn availability ON when you
+                    are willing and able to respond
+                    to blood donation requests.
+                </p>
+
+                <label class="availability-option"
+                       for="availabilityToggle">
+
+                    <input type="checkbox"
+                           id="availabilityToggle">
+
+                    <span>
+                        Available to Donate
+                    </span>
+
+                </label>
+
+                <p id="availabilityMessage"
+                   class="feedback"
+                   role="status"
+                   aria-live="polite"></p>
+
+                <p class="hint">
+                    Turn this OFF when you cannot
+                    donate. Your availability status
+                    affects whether you appear in
+                    donor searches.
+                </p>
+
+            </section>
+
+            <!-- LOCATION PANEL -->
+            <section class="panel">
+
+                <h3>Share My Location</h3>
+
+                <p class="muted">
+                    Share your current location
+                    to help nearby requesters
+                    discover you on the donor map.
+                </p>
+
+                <button type="button"
+                        id="shareLocation"
+                        class="btn outline">
+                    Share My Map Location (Optional)
+                </button>
+
+                <p id="locationMessage"
+                   class="feedback"
+                   role="status"
+                   aria-live="polite"></p>
+
+                <p class="hint">
+                    Your browser will ask for location
+                    permission. Location sharing
+                    is optional.
+                </p>
+
+            </section>
+
+            <!-- DONOR INFORMATION -->
+            <section class="panel">
+
+                <h3>Important Information</h3>
+
+                <p>
+                    <strong>Availability ON:</strong>
+                    You may appear in donor searches,
+                    depending on eligibility and
+                    application filters.
+                </p>
+
+                <p>
+                    <strong>Availability OFF:</strong>
+                    You indicate that you are not
+                    currently available to donate.
+                </p>
+
+                <p>
+                    <strong>Location Sharing:</strong>
+                    Your saved coordinates may be
+                    displayed on the donor map.
+                </p>
+
+            </section>
+
+            <p class="footnote">
+                Being available does not guarantee
+                medical eligibility to donate blood.
+                Donation eligibility and blood
+                compatibility must be verified
+                by qualified medical professionals.
+            </p>
+
+        </main>
+
+    </div>
+
+    <!-- EXISTING PROJECT JAVASCRIPT -->
+    <script src="/js/app.js"></script>
+
+</body>
+</html>

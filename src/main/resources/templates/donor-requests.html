@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>My Blood Requests | RaktaSetu</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <meta name="_csrf" th:content="${_csrf.token}">
+
+    <!-- DAY / NIGHT THEME -->
+    <script src="/js/theme.js" defer></script>
+</head>
+
+<body data-role="DONOR" data-page="requests">
+
+    <!-- HEADER -->
+    <header class="top dashboard-top">
+
+        <!-- ORIGINAL RAKTASETU LOGO -->
+        <a class="logo header-brand" href="/dashboard">
+            <img
+                src="/images/raktasetu-logo.png"
+                alt="RaktaSetu"
+                class="header-brand-logo">
+        </a>
+
+        <span>Donor Portal</span>
+
+        <form method="post"
+              action="/logout"
+              class="logout">
+
+            <input type="hidden"
+                   name="_csrf"
+                   th:value="${_csrf.token}"
+                   class="csrf-field">
+
+            <button type="submit" class="linkbtn">
+                Logout
+            </button>
+
+        </form>
+
+    </header>
+
+    <div class="dash">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="avatar">♥</div>
+
+            <h3 id="sideName">Donor</h3>
+            <p>Donor</p>
+
+            <a href="/dashboard"
+               data-nav="dashboard">
+                Dashboard
+            </a>
+
+            <a href="/donor/profile"
+               data-nav="profile">
+                My Profile
+            </a>
+
+            <a href="/donor/availability"
+               data-nav="availability">
+                Update Availability
+            </a>
+
+            <a href="/donor/requests"
+               data-nav="requests"
+               aria-current="page">
+                My Requests
+            </a>
+
+            <!-- DONATION HISTORY -->
+            <a href="/donor/donations"
+               data-nav="donations">
+                My Donation History
+            </a>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="dashmain">
+
+            <h2>My Blood Requests</h2>
+
+            <p class="muted">
+                View blood requests assigned to you
+                and respond to pending requests.
+            </p>
+
+            <!-- REQUEST STATISTICS -->
+            <section class="statgrid">
+
+                <div class="stat">
+                    <small>Total Requests</small>
+                    <b id="statTotal">0</b>
+                </div>
+
+                <div class="stat">
+                    <small>Pending Requests</small>
+                    <b id="statPending">0</b>
+                </div>
+
+                <div class="stat">
+                    <small>Accepted Requests</small>
+                    <b id="statAccepted">0</b>
+                </div>
+
+            </section>
+
+            <!-- REQUEST LIST -->
+            <section class="panel">
+
+                <div class="request-header">
+
+                    <h3>Blood Request History</h3>
+
+                    <a class="btn outline"
+                       href="/donor/availability">
+                        Manage Availability
+                    </a>
+
+                </div>
+
+                <p class="muted">
+                    Review incoming blood requests.
+                    Accept only when you are able
+                    to respond.
+                </p>
+
+                <div id="requestList"
+                     class="stack results"
+                     aria-live="polite">
+
+                    <p class="muted">
+                        Loading blood requests...
+                    </p>
+
+                </div>
+
+                <p id="requestActionMessage"
+                   class="feedback"
+                   role="status"
+                   aria-live="polite"></p>
+
+            </section>
+
+            <!-- REQUEST STATUS GUIDE -->
+            <section class="panel">
+
+                <h3>Request Status Guide</h3>
+
+                <div class="stack">
+
+                    <p>
+                        <strong>Pending:</strong>
+                        Waiting for your response.
+                    </p>
+
+                    <p>
+                        <strong>Accepted:</strong>
+                        You have accepted the request.
+                    </p>
+
+                    <p>
+                        <strong>Rejected:</strong>
+                        You declined the request.
+                    </p>
+
+                    <p>
+                        <strong>Completed:</strong>
+                        The request has been marked
+                        as completed.
+                    </p>
+
+                </div>
+
+            </section>
+
+            <p class="footnote">
+                Accepting a request does not confirm
+                blood compatibility or medical
+                eligibility. Coordinate with the
+                hospital and qualified medical staff.
+            </p>
+
+        </main>
+
+    </div>
+
+    <!-- EXISTING PROJECT JAVASCRIPT -->
+    <script src="/js/app.js"></script>
+
+</body>
+</html>

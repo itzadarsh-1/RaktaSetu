@@ -1,6 +1,414 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RaktaSetu | Blood Donation</title><link rel="stylesheet" href="/css/style.css"><meta name="_csrf" th:content="${_csrf.token}"></head><body>
-<header class="top"><a class="logo" href="/">🩸 <span>RaktaSetu</span></a><nav><a href="/">Home</a><a href="#about">About</a><a href="#how">How It Works</a><a href="#contact">Contact</a></nav><div class="navright"><a href="/login">Login</a><a class="btn small" href="/register">Register</a></div></header>
-<main><section class="hero"><div><div class="eyebrow">TOGETHER WE SAVE LIVES</div><h1><span>RaktaSetu</span><small>Blood Donation &amp; Emergency Donor Finder</small></h1><p>Connects people in need with willing donors.<br>Because every drop counts.</p><div class="actions"><a class="btn" href="/register?role=REQUESTER">Find a Donor</a><a class="btn outline" href="/register?role=DONOR">Donate Blood</a></div></div><div class="hero-art"><div class="pulse">♥</div><div class="drop">♥</div><div class="hands">🤲</div></div></section>
-<div class="features"><div>💗 <b>Save Lives</b><small>Together</small></div><div>◉ <b>Quick Response</b><small>In Emergencies</small></div><div>♧ <b>Trusted Donors</b><small>Verified by healthcare providers*</small></div><div>✥ <b>Build Community</b><small>Join the movement</small></div></div>
-<section class="section" id="how"><h2>How It Works?</h2><div class="steps"><article><span>01</span><h3>Register</h3><p>Create your account as donor or requester.</p></article><article><span>02</span><h3>Search / Request</h3><p>Find donors by blood group and location.</p></article><article><span>03</span><h3>Connect</h3><p>Send a request to an available donor.</p></article><article><span>04</span><h3>Save Lives</h3><p>Connect with hospital staff to verify donation.</p></article></div></section>
-<section id="about" class="about"><h2>Why RaktaSetu?</h2><p>A Java Spring Boot and MySQL project that brings donors, blood requesters and administrators together on one platform.</p></section><section id="contact" class="footnote">*This prototype does not verify donors or blood compatibility. A licensed medical service must confirm donor eligibility, compatibility and availability before transfusion.</section></main><footer>© RaktaSetu • Blood Donation &amp; Emergency Donor Finder | Java + Spring Boot + MySQL</footer></body></html>
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <meta name="description"
+          content="RaktaSetu connects people who need blood with voluntary blood donors. Search donors, raise requests and help your community.">
+
+    <title>RaktaSetu | Blood Donation & Emergency Donor Finder</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/theme.js" defer></script>
+</head>
+
+<body class="home-page">
+
+    <!-- =====================================
+         NAVIGATION
+         ===================================== -->
+
+    <header class="top home-header">
+
+       
+<!-- RaktaSetu New Logo -->
+
+<a href="/" class="logo home-logo" aria-label="RaktaSetu Home">
+
+    <img
+    src="/images/raktasetu-logo.png"
+    alt="RaktaSetu"
+    class="raktasetu-header-logo"
+>
+</a>
+
+        <nav class="home-nav" aria-label="Main navigation">
+            <a href="#home" class="home-nav-active">Home</a>
+            <a href="#about">About</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="navright home-nav-actions">
+            <a href="/login" class="home-login">
+                Login
+            </a>
+
+            <a href="/register" class="btn small">
+                Register
+            </a>
+        </div>
+
+    </header>
+
+
+    <!-- =====================================
+         PHOTO HERO
+         ===================================== -->
+
+    <main>
+
+        <section class="rs-hero" id="home">
+
+            <div class="rs-hero-overlay"></div>
+
+            <div class="rs-hero-content">
+
+                <div class="rs-hero-text">
+
+                    <span class="rs-hero-eyebrow">
+                        GIVE BLOOD. GIVE HOPE.
+                    </span>
+
+                    <h1>
+                        RaktaSetu
+                    </h1>
+
+                    <h2>
+                        Connecting Blood Donors
+                        With People in Need
+                    </h2>
+
+                    <p>
+                        Find voluntary blood donors,
+                        raise emergency blood requests
+                        and connect with people ready
+                        to help in your community.
+                    </p>
+
+                    <div class="rs-hero-actions">
+
+                        <a href="/register?role=REQUESTER"
+                           class="btn rs-primary-btn">
+                            Find a Donor
+                        </a>
+
+                        <a href="/register?role=DONOR"
+                           class="btn rs-secondary-btn">
+                            Become a Donor
+                        </a>
+
+                    </div>
+
+                    <p class="rs-hero-note">
+                        Every drop matters. Every donor counts.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- FEATURE STRIP -->
+
+            <div class="rs-hero-features">
+
+                <div class="rs-hero-feature">
+                    <span class="rs-feature-icon" aria-hidden="true">
+                        ♡
+                    </span>
+                    <div>
+                        <strong>Find Donors</strong>
+                        <small>Search by blood group and city</small>
+                    </div>
+                </div>
+
+                <div class="rs-hero-feature">
+                    <span class="rs-feature-icon" aria-hidden="true">
+                        +
+                    </span>
+                    <div>
+                        <strong>Request Blood</strong>
+                        <small>Submit your blood requirement</small>
+                    </div>
+                </div>
+
+                <div class="rs-hero-feature">
+                    <span class="rs-feature-icon" aria-hidden="true">
+                        ◉
+                    </span>
+                    <div>
+                        <strong>Connect Locally</strong>
+                        <small>Reach voluntary donors nearby</small>
+                    </div>
+                </div>
+
+                <div class="rs-hero-feature">
+                    <span class="rs-feature-icon" aria-hidden="true">
+                        ♥
+                    </span>
+                    <div>
+                        <strong>Support Community</strong>
+                        <small>Help people during emergencies</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             HOW IT WORKS
+             ===================================== -->
+
+        <section class="rs-section" id="how-it-works">
+
+            <div class="rs-section-heading">
+
+                <span class="rs-section-label">
+                    SIMPLE PROCESS
+                </span>
+
+                <h2>How RaktaSetu Works</h2>
+
+                <p>
+                    Four simple steps to connect
+                    blood donors and requesters.
+                </p>
+
+            </div>
+
+            <div class="rs-steps">
+
+                <article class="rs-step-card">
+
+                    <div class="rs-step-top">
+                        <span class="rs-step-number">01</span>
+                        <span class="rs-step-symbol" aria-hidden="true">+</span>
+                    </div>
+
+                    <h3>Register</h3>
+
+                    <p>
+                        Create your account as
+                        a donor or blood requester.
+                    </p>
+
+                </article>
+
+                <article class="rs-step-card">
+
+                    <div class="rs-step-top">
+                        <span class="rs-step-number">02</span>
+                        <span class="rs-step-symbol" aria-hidden="true">⌕</span>
+                    </div>
+
+                    <h3>Find Donors</h3>
+
+                    <p>
+                        Search available donors
+                        using blood group and location.
+                    </p>
+
+                </article>
+
+                <article class="rs-step-card">
+
+                    <div class="rs-step-top">
+                        <span class="rs-step-number">03</span>
+                        <span class="rs-step-symbol" aria-hidden="true">↗</span>
+                    </div>
+
+                    <h3>Send Request</h3>
+
+                    <p>
+                        Raise a blood request
+                        and connect with a donor.
+                    </p>
+
+                </article>
+
+                <article class="rs-step-card">
+
+                    <div class="rs-step-top">
+                        <span class="rs-step-number">04</span>
+                        <span class="rs-step-symbol" aria-hidden="true">♡</span>
+                    </div>
+
+                    <h3>Help Save Lives</h3>
+
+                    <p>
+                        Coordinate donation
+                        with the donor and hospital.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             ABOUT
+             ===================================== -->
+
+        <section class="rs-about" id="about">
+
+            <div class="rs-about-inner">
+
+                <div class="rs-about-text">
+
+                    <span class="rs-section-label">
+                        ABOUT RAKTASETU
+                    </span>
+
+                    <h2>
+                        A Connection That
+                        Can Make a Difference
+                    </h2>
+
+                    <p>
+                        RaktaSetu is a blood donation
+                        and emergency donor finder platform
+                        built to connect people who need
+                        blood with voluntary donors.
+                    </p>
+
+                    <p>
+                        Donors can manage their availability,
+                        while requesters can search for donors,
+                        submit blood requests and track
+                        their request status.
+                    </p>
+
+                    <a href="/register"
+                       class="btn">
+                        Join RaktaSetu
+                    </a>
+
+                </div>
+
+                <div class="rs-about-card">
+
+                    <div class="rs-about-heart" aria-hidden="true">
+                        ♥
+                    </div>
+
+                    <h3>Be Someone's Hope</h3>
+
+                    <p>
+                        A single decision to help
+                        can make a meaningful difference
+                        to someone in need.
+                    </p>
+
+                    <a href="/register?role=DONOR">
+                        Register as a Donor
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             CALL TO ACTION
+             ===================================== -->
+
+        <section class="rs-cta">
+
+            <div class="rs-cta-inner">
+
+                <div>
+                    <h2>Ready to Make a Difference?</h2>
+
+                    <p>
+                        Join RaktaSetu and help connect
+                        people with voluntary blood donors.
+                    </p>
+                </div>
+
+                <div class="rs-cta-actions">
+
+                    <a href="/register?role=DONOR"
+                       class="btn rs-cta-white">
+                        Become a Donor
+                    </a>
+
+                    <a href="/register?role=REQUESTER"
+                       class="btn rs-cta-outline">
+                        Request Blood
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================
+         FOOTER
+         ===================================== -->
+
+    <footer class="rs-footer" id="contact">
+
+        <div class="rs-footer-main">
+
+            <div>
+                <h3>RaktaSetu</h3>
+
+                <p>
+                    Blood Donation & Emergency Donor Finder
+                </p>
+            </div>
+
+            <div class="rs-footer-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="/login">Login</a>
+                <a href="/register">Register</a>
+            </div>
+
+        </div>
+
+        <div class="rs-footer-bottom">
+
+            <p>
+                © <span id="currentYear">2026</span>
+                RaktaSetu. All rights reserved.
+            </p>
+
+            <p>
+                For urgent medical needs, contact
+                your hospital or emergency services.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- EXISTING JAVASCRIPT -->
+
+    <script src="/js/app.js"></script>
+
+    <script>
+        document.getElementById('currentYear').textContent =
+            new Date().getFullYear();
+    </script>
+
+</body>
+</html>

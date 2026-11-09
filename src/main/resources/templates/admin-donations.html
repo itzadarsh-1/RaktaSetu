@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Manage Donations | RaktaSetu</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <meta name="_csrf" th:content="${_csrf.token}">
+
+    <!-- DAY / NIGHT THEME -->
+    <script src="/js/theme.js" defer></script>
+
+    <!-- DONATION MANAGEMENT JAVASCRIPT -->
+    <script src="/js/admin-donations.js" defer></script>
+</head>
+
+<body data-role="ADMIN" data-page="donations">
+
+    <!-- HEADER -->
+    <header class="top dashboard-top">
+
+        <!-- ORIGINAL RAKTASETU LOGO -->
+        <a class="logo header-brand" href="/dashboard">
+            <img
+                src="/images/raktasetu-logo.png"
+                alt="RaktaSetu"
+                class="header-brand-logo">
+        </a>
+
+        <span>Admin Dashboard</span>
+
+        <form method="post"
+              action="/logout"
+              class="logout">
+
+            <input type="hidden"
+                   name="_csrf"
+                   th:value="${_csrf.token}"
+                   class="csrf-field">
+
+            <button type="submit"
+                    class="linkbtn">
+                Logout
+            </button>
+
+        </form>
+
+    </header>
+
+    <div class="dash">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="avatar">♡</div>
+
+            <h3 id="sideName">Admin</h3>
+
+            <p>Administrator</p>
+
+            <a href="/dashboard"
+               data-nav="dashboard">
+                Dashboard
+            </a>
+
+            <a href="/admin/users"
+               data-nav="users">
+                Manage Users
+            </a>
+
+            <a href="/admin/requests"
+               data-nav="requests">
+                Blood Requests
+            </a>
+
+            <a href="/admin/donations"
+               data-nav="donations"
+               class="active"
+               aria-current="page">
+                Manage Donations
+            </a>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="dashmain">
+
+            <h2>Manage Blood Donations</h2>
+
+            <p class="muted">
+                Record and verify donor blood donations.
+            </p>
+
+            <!-- ADD DONATION -->
+            <section class="panel">
+
+                <h3>Add Donation Record</h3>
+
+                <form id="donationForm">
+
+                    <!-- SELECT DONOR -->
+                    <label>
+                        Select Donor
+
+                        <select id="donorId" required>
+                            <option value="">
+                                Loading donors...
+                            </option>
+                        </select>
+                    </label>
+
+                    <!-- DONATION DATE -->
+                    <label>
+                        Donation Date
+
+                        <input type="date"
+                               id="donationDate"
+                               required>
+                    </label>
+
+                    <!-- BLOOD QUANTITY -->
+                    <label>
+                        Blood Quantity (mL)
+
+                        <input type="number"
+                               id="quantityMl"
+                               min="1"
+                               max="1000"
+                               placeholder="Enter actual quantity"
+                               required>
+                    </label>
+
+                    <!-- HOSPITAL -->
+                    <label>
+                        Hospital / Blood Bank
+
+                        <input type="text"
+                               id="hospital"
+                               placeholder="Hospital name">
+                    </label>
+
+                    <!-- CITY -->
+                    <label>
+                        City
+
+                        <input type="text"
+                               id="city"
+                               placeholder="Donation city">
+                    </label>
+
+                    <!-- SUBMIT BUTTON -->
+                    <button type="submit" class="btn">
+                        Add Donation
+                    </button>
+
+                    <!-- FEEDBACK -->
+                    <p id="donationMessage"
+                       class="feedback"
+                       role="status"
+                       aria-live="polite"></p>
+
+                </form>
+
+            </section>
+
+            <!-- DONATION HISTORY -->
+            <section class="panel">
+
+                <h3>Donation Records</h3>
+
+                <button type="button"
+                        class="btn outline"
+                        id="refreshDonations">
+                    Refresh Records
+                </button>
+
+                <div style="overflow-x:auto; margin-top:16px;">
+
+                    <table style="width:100%; border-collapse:collapse;"
+                           border="1"
+                           cellpadding="10">
+
+                        <thead>
+                            <tr>
+                                <th>Donor</th>
+                                <th>Date</th>
+                                <th>Quantity</th>
+                                <th>Hospital</th>
+                                <th>City</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="donationTableBody">
+
+                            <tr>
+                                <td colspan="7">
+                                    Loading donation records...
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+            <p class="footnote">
+                RaktaSetu Administration Panel
+            </p>
+
+        </main>
+
+    </div>
+
+</body>
+</html>

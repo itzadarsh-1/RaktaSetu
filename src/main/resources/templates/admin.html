@@ -1,1 +1,1139 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Dashboard | RaktaSetu</title><link rel="stylesheet" href="/css/style.css"><meta name="_csrf" th:content="${_csrf.token}"></head><body data-role="ADMIN"><header class="top dashboard-top"><a class="logo" href="/">🩸 <span>RaktaSetu</span></a><span>Admin Dashboard</span><form method="post" action="/logout"><input name="_csrf" type="hidden" th:value="${_csrf.token}" class="csrf-field"><button class="linkbtn">Logout ↗</button></form></header><div class="dash"><aside class="sidebar"><div class="avatar">🛡</div><h3>Admin</h3><p>Administrator</p><a href="#home">▣ Dashboard</a><a href="#users">♙ Manage Users</a><a href="#requests">▤ Blood Requests</a></aside><main class="dashmain"><h2 id="home">Admin Dashboard</h2><section class="statgrid"><div class="stat"><small>Total Users</small><b id="statUsers">0</b></div><div class="stat"><small>Total Donors</small><b id="statDonors">0</b></div><div class="stat"><small>Active Donors</small><b id="statActive">0</b></div><div class="stat"><small>Emergency Requests</small><b id="statRequests">0</b></div><div class="stat"><small>Pending</small><b id="statPending">0</b></div><div class="stat"><small>Accepted</small><b id="statAccepted">0</b></div></section><section class="panel" id="users"><h3>Manage Users</h3><div id="usersList" class="tablewrap"></div></section><section class="panel" id="requests"><h3>Blood Requests</h3><div id="requestList" class="tablewrap"></div></section></main></div><script src="/js/app.js"></script></body></html>
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>Admin Dashboard | RaktaSetu</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <meta name="_csrf" th:content="${_csrf.token}">
+
+    <script src="/js/theme.js" defer></script>
+
+    <style>
+        /* ADMIN DASHBOARD ONLY */
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-welcome {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-welcome h2 {
+            margin-bottom: 5px;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-welcome p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-label {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 12px;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            background: var(--white);
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-stats {
+            margin: 0 0 22px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-stats .stat {
+            position: relative;
+            overflow: hidden;
+            min-height: 125px;
+            padding: 20px;
+            border-left: 3px solid var(--red);
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-stats .stat b {
+            font-size: 31px;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-stat-note {
+            display: block;
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+            align-items: stretch;
+            gap: 20px;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-content-grid .panel {
+            margin-bottom: 20px;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-panel-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-panel-heading h3 {
+            margin: 0;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-panel-heading a {
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-status-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 9px;
+            font-size: 13px;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-status-track {
+            width: 100%;
+            height: 10px;
+            overflow: hidden;
+            margin-bottom: 22px;
+            border-radius: 20px;
+            background: var(--bg);
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-status-fill {
+            height: 100%;
+            width: 0;
+            border-radius: inherit;
+            transition: width 0.5s ease;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-status-fill.pending {
+            background: #f59e0b;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-status-fill.accepted {
+            background: #16a34a;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-chart-note {
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-action-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-action-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            background: var(--white);
+            transition: border-color 0.2s ease;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-action-item:hover {
+            border-color: var(--red);
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-action-item strong {
+            display: block;
+            color: var(--dark);
+            font-size: 13px;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-action-item small {
+            display: block;
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-action-item > span {
+            color: var(--red);
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-empty-state {
+            padding: 26px 18px;
+            border: 1px dashed var(--line);
+            border-radius: 9px;
+            text-align: center;
+        }
+
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-empty-state p {
+            margin-bottom: 15px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        html[data-theme="dark"]
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-action-item,
+        html[data-theme="dark"]
+        body[data-role="ADMIN"][data-page="dashboard"]
+        .admin-label {
+            background: #1b2633;
+            border-color: #344254;
+        }
+
+        @media (max-width: 1050px) {
+            body[data-role="ADMIN"][data-page="dashboard"]
+            .admin-content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            body[data-role="ADMIN"][data-page="dashboard"]
+            .admin-stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 420px) {
+            body[data-role="ADMIN"][data-page="dashboard"]
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body data-role="ADMIN" data-page="dashboard">
+
+ 
+<!-- HEADER -->
+<header class="top dashboard-top">
+
+    <a class="logo header-brand" href="/dashboard">
+        <img
+            src="/images/raktasetu-logo.png"
+            alt="RaktaSetu"
+            class="header-brand-logo">
+    </a>
+
+    <span class="admin-header-title">
+        Admin Dashboard
+    </span>
+
+    <!-- MOBILE MENU BUTTON -->
+    <button
+        type="button"
+        class="admin-mobile-menu-btn"
+        id="adminMobileMenuBtn"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="adminMobileNav">
+
+        <svg width="22" height="22"
+             viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="2"
+             stroke-linecap="round">
+
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+    </button>
+
+    <form method="post"
+          action="/logout"
+          class="logout">
+
+        <input type="hidden"
+               name="_csrf"
+               th:value="${_csrf.token}"
+               class="csrf-field">
+
+        <button type="submit" class="linkbtn">
+            Logout
+        </button>
+
+    </form>
+
+</header>
+
+<!-- MOBILE ADMIN NAVIGATION -->
+<nav id="adminMobileNav"
+     class="admin-mobile-nav"
+     aria-label="Mobile admin navigation"
+     hidden>
+
+    <a href="/dashboard">
+        Dashboard
+    </a>
+
+    <a href="/admin/users">
+        Manage Users
+    </a>
+
+    <a href="/admin/requests">
+        Blood Requests
+    </a>
+
+    <a href="/admin/donations">
+        Manage Donations
+    </a>
+
+</nav>
+
+    <div class="dash">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="avatar">♡</div>
+
+            <h3 id="sideName">Admin</h3>
+
+            <p>Administrator</p>
+
+            <a href="/dashboard"
+               data-nav="dashboard"
+               class="active"
+               aria-current="page">
+                Dashboard
+            </a>
+
+            <a href="/admin/users"
+               data-nav="users">
+                Manage Users
+            </a>
+
+            <a href="/admin/requests"
+               data-nav="requests">
+                Blood Requests
+            </a>
+
+            <a href="/admin/donations"
+               data-nav="donations">
+                Manage Donations
+            </a>
+
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="dashmain">
+
+            <!-- WELCOME -->
+            <section class="admin-welcome">
+
+                <div>
+                    <h2>Admin Dashboard</h2>
+
+                    <p>
+                        Monitor users, donors,
+                        blood requests and donations.
+                    </p>
+                </div>
+
+                <span class="admin-label">
+                    Administration Panel
+                </span>
+
+            </section>
+
+            
+<!-- STATISTICS -->
+
+<!-- STATISTICS -->
+<section class="statgrid admin-stats"
+         aria-label="Dashboard statistics">
+
+    <!-- TOTAL USERS -->
+    <div class="stat stat-card">
+        <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <small>Total Users</small>
+            <b id="statUsers">0</b>
+            <span class="admin-stat-note">Registered accounts</span>
+        </div>
+    </div>
+
+    <!-- TOTAL DONORS -->
+    <div class="stat stat-card">
+        <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <small>Total Donors</small>
+            <b id="statDonors">0</b>
+            <span class="admin-stat-note">Registered blood donors</span>
+        </div>
+    </div>
+
+    <!-- ACTIVE DONORS -->
+    <div class="stat stat-card">
+        <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"/>
+                <path d="M3.5 12h5l2-3 3 6 2-3h5"/>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <small>Active Donors</small>
+            <b id="statActive">0</b>
+            <span class="admin-stat-note">Currently available donors</span>
+        </div>
+    </div>
+
+    <!-- EMERGENCY REQUESTS -->
+    <div class="stat stat-card">
+        <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 16v-5a7 7 0 0 1 14 0v5"/>
+                <path d="M3 20h18"/>
+                <path d="M8 16h8"/>
+                <path d="M12 2v2"/>
+                <path d="M4 5 2.5 3.5"/>
+                <path d="M20 5l1.5-1.5"/>
+                <path d="M12 9v3"/>
+                <path d="M12 15h.01"/>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <small>Emergency Requests</small>
+            <b id="statRequests">0</b>
+            <span class="admin-stat-note">Total blood requests</span>
+        </div>
+    </div>
+
+    <!-- PENDING REQUESTS -->
+    <div class="stat stat-card">
+        <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M12 7v5l3 2"/>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <small>Pending Requests</small>
+            <b id="statPending">0</b>
+            <span class="admin-stat-note">Awaiting donor response</span>
+        </div>
+    </div>
+
+    <!-- ACCEPTED REQUESTS -->
+    <div class="stat stat-card">
+        <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="m8 12 3 3 5-6"/>
+            </svg>
+        </div>
+        <div class="stat-info">
+            <small>Accepted Requests</small>
+            <b id="statAccepted">0</b>
+            <span class="admin-stat-note">Accepted blood requests</span>
+        </div>
+    </div>
+
+</section>
+
+            <!-- ANALYTICS AND QUICK ACTIONS -->
+            <div class="admin-content-grid">
+
+                <!-- REQUEST STATUS -->
+               
+<section class="panel admin-donut-panel">
+
+    <div class="admin-panel-heading">
+        <h3>Blood Requests Overview</h3>
+        <a href="/admin/requests">View All</a>
+    </div>
+
+    <p class="muted">
+        Overview of all blood request statuses.
+    </p>
+
+    <div class="admin-donut-layout">
+
+        <div class="admin-donut-chart"
+             id="adminDonutChart"
+             role="img"
+             aria-label="Blood request status chart">
+
+            <div class="admin-donut-center">
+                <strong id="adminDonutTotal">0</strong>
+                <span>Total Requests</span>
+            </div>
+
+        </div>
+
+        <div class="admin-donut-legend">
+
+            <div class="admin-donut-legend-item">
+                <span class="admin-legend-dot pending"></span>
+                <span>Pending</span>
+                <strong id="adminDonutPending">0 (0%)</strong>
+            </div>
+
+            <div class="admin-donut-legend-item">
+                <span class="admin-legend-dot accepted"></span>
+                <span>Accepted</span>
+                <strong id="adminDonutAccepted">0 (0%)</strong>
+            </div>
+
+            <div class="admin-donut-legend-item">
+                <span class="admin-legend-dot others"></span>
+                <span>Others</span>
+                <strong id="adminDonutOthers">0 (0%)</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+                <!-- QUICK ACTIONS -->
+                <section class="panel">
+
+                    <div class="admin-panel-heading">
+                        <h3>Quick Actions</h3>
+                    </div>
+
+                    <div class="admin-action-list">
+
+                        <a href="/admin/users"
+                           class="admin-action-item">
+
+                            <div>
+                                <strong>Manage Users</strong>
+                                <small>
+                                    Review registered accounts
+                                </small>
+                            </div>
+
+                            <span aria-hidden="true">›</span>
+                        </a>
+
+                        <a href="/admin/requests"
+                           class="admin-action-item">
+
+                            <div>
+                                <strong>Blood Requests</strong>
+                                <small>
+                                    Monitor emergency requests
+                                </small>
+                            </div>
+
+                            <span aria-hidden="true">›</span>
+                        </a>
+
+                        <a href="/admin/donations"
+                           class="admin-action-item">
+
+                            <div>
+                                <strong>Manage Donations</strong>
+                                <small>
+                                    Maintain donation records
+                                </small>
+                            </div>
+
+                            <span aria-hidden="true">›</span>
+                        </a>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+
+<!-- =============================== -->
+<!-- ADMIN BLOOD DONATION REPORTS -->
+<!-- =============================== -->
+
+<section class="panel admin-reports-panel">
+
+    <div class="admin-panel-heading">
+        <h3>Blood Donation Reports</h3>
+    </div>
+
+    <p class="muted">
+        Download blood donation records with donor details,
+        donation dates, blood quantity, hospital, city and status.
+        Select a date range to download filtered reports.
+    </p>
+
+    <!-- DATE RANGE FILTER -->
+
+    <div class="admin-report-filter">
+
+        <div class="admin-report-date-field">
+            <label for="reportFromDate">From Date</label>
+            <input
+                type="date"
+                id="reportFromDate">
+        </div>
+
+        <div class="admin-report-date-field">
+            <label for="reportToDate">To Date</label>
+            <input
+                type="date"
+                id="reportToDate">
+        </div>
+
+        <button
+            type="button"
+            id="reportClearDates"
+            class="admin-report-clear-btn">
+            Clear Dates
+        </button>
+
+        <p
+            id="reportDateError"
+            class="admin-report-date-error"
+            role="alert"
+            hidden>
+        </p>
+
+    </div>
+
+    <!-- REPORT DOWNLOAD AREA -->
+
+    <div class="admin-report-content">
+
+        <div class="admin-report-info">
+
+            <div class="admin-report-icon">
+                <svg
+                    width="28"
+                    height="28"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <path d="M14 2v6h6"/>
+                    <path d="M8 13h8"/>
+                    <path d="M8 17h8"/>
+
+                </svg>
+            </div>
+
+            <div>
+                <strong>Complete Donation History</strong>
+                <small>
+                    Download all records or your selected date range
+                    in CSV, Excel or PDF format.
+                </small>
+            </div>
+
+        </div>
+
+        <!-- DOWNLOAD BUTTONS -->
+
+        <div class="admin-report-actions">
+
+            <!-- CSV -->
+
+            <a
+                href="/api/admin/reports/donations/csv"
+                class="admin-report-download-btn">
+
+                <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M12 3v12"/>
+                    <path d="m7 10 5 5 5-5"/>
+                    <path d="M5 17v3h14v-3"/>
+
+                </svg>
+
+                Download CSV
+            </a>
+
+            <!-- EXCEL -->
+
+            <a
+                href="/api/admin/reports/donations/excel"
+                class="admin-report-download-btn admin-report-excel-btn">
+
+                <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2-2V8z"/>
+                    <path d="M14 2v6h6"/>
+                    <path d="M8 13h8"/>
+                    <path d="M8 17h8"/>
+                    <path d="M12 11v8"/>
+                    <path d="m9 16 3 3 3-3"/>
+
+                </svg>
+
+                Download Excel
+            </a>
+
+            <!-- PDF -->
+
+            <a
+                href="/api/admin/reports/donations/pdf"
+                class="admin-report-download-btn admin-report-pdf-btn">
+
+                <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2-2V8z"/>
+                    <path d="M14 2v6h6"/>
+                    <path d="M8 13h8"/>
+                    <path d="M8 17h8"/>
+
+                </svg>
+
+                Download PDF
+            </a>
+
+        </div>
+
+    </div>
+
+    <p class="admin-report-note">
+        All statuses are included in reports.
+        Only VERIFIED donations count towards confirmed
+        donation totals. Leave dates blank to download
+        the complete history.
+    </p>
+
+</section>
+
+<!-- DATE FILTER SCRIPT -->
+
+<script>
+(function () {
+
+    function initializeDonationReportFilter() {
+
+        const fromInput =
+            document.getElementById("reportFromDate");
+
+        const toInput =
+            document.getElementById("reportToDate");
+
+        const clearButton =
+            document.getElementById("reportClearDates");
+
+        const errorBox =
+            document.getElementById("reportDateError");
+
+        const reportButtons = document.querySelectorAll(
+            ".admin-reports-panel .admin-report-actions a"
+        );
+
+        if (!fromInput || !toInput || !errorBox) {
+            return;
+        }
+
+        function validateDates() {
+
+            if (
+                fromInput.value &&
+                toInput.value &&
+                fromInput.value > toInput.value
+            ) {
+                errorBox.textContent =
+                    "From Date cannot be after To Date.";
+
+                errorBox.hidden = false;
+
+                return false;
+            }
+
+            errorBox.textContent = "";
+            errorBox.hidden = true;
+
+            return true;
+        }
+
+        function updateLinks() {
+
+            const valid = validateDates();
+
+            reportButtons.forEach(function (button) {
+
+                const url = new URL(
+                    button.getAttribute("href"),
+                    window.location.origin
+                );
+
+                url.searchParams.delete("fromDate");
+                url.searchParams.delete("toDate");
+
+                if (valid) {
+
+                    if (fromInput.value) {
+                        url.searchParams.set(
+                            "fromDate",
+                            fromInput.value
+                        );
+                    }
+
+                    if (toInput.value) {
+                        url.searchParams.set(
+                            "toDate",
+                            toInput.value
+                        );
+                    }
+                }
+
+                button.href = url.pathname + url.search;
+
+                button.setAttribute(
+                    "aria-disabled",
+                    String(!valid)
+                );
+            });
+        }
+
+        fromInput.addEventListener(
+            "change",
+            updateLinks
+        );
+
+        toInput.addEventListener(
+            "change",
+            updateLinks
+        );
+
+        reportButtons.forEach(function (button) {
+
+            button.addEventListener(
+                "click",
+                function (event) {
+
+                    updateLinks();
+
+                    if (!validateDates()) {
+                        event.preventDefault();
+                    }
+                }
+            );
+        });
+
+        clearButton.addEventListener(
+            "click",
+            function () {
+
+                fromInput.value = "";
+                toInput.value = "";
+
+                updateLinks();
+            }
+        );
+
+        updateLinks();
+    }
+
+    if (document.readyState === "loading") {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            initializeDonationReportFilter
+        );
+
+    } else {
+
+        initializeDonationReportFilter();
+    }
+
+})();
+</script>
+
+
+
+            <!-- RECENT REQUESTS -->
+            <section class="panel">
+
+                <div class="admin-panel-heading">
+                    <h3>Recent Blood Requests</h3>
+
+                    <a href="/admin/requests">
+                        View All Requests
+                    </a>
+                </div>
+
+                <div id="adminRecentRequests">
+    <p class="muted">
+        Loading recent blood requests...
+    </p>
+</div>
+            </section>
+
+            <p class="footnote">
+                RaktaSetu Administration Panel
+            </p>
+
+        </main>
+
+    </div>
+
+    <!-- EXISTING JAVASCRIPT -->
+    <script src="/js/app.js" defer></script>
+
+    <!-- DASHBOARD STATUS VISUALIZATION -->
+    <script>
+        (function () {
+            "use strict";
+
+            const getNumber = (id) => {
+                const element = document.getElementById(id);
+
+                if (!element) return 0;
+
+                const number = Number(
+                    element.textContent.replace(/,/g, "").trim()
+                );
+
+                return Number.isFinite(number)
+                    ? Math.max(0, number)
+                    : 0;
+            };
+
+            function updateStatusChart() {
+                const total = getNumber("statRequests");
+                const pending = getNumber("statPending");
+                const accepted = getNumber("statAccepted");
+
+                const pendingPercent = total > 0
+                    ? Math.min(100, (pending / total) * 100)
+                    : 0;
+
+                const acceptedPercent = total > 0
+                    ? Math.min(100, (accepted / total) * 100)
+                    : 0;
+
+                document.getElementById(
+                    "adminPendingCount"
+                ).textContent = pending;
+
+                document.getElementById(
+                    "adminAcceptedCount"
+                ).textContent = accepted;
+
+                document.getElementById(
+                    "adminPendingBar"
+                ).style.width = pendingPercent + "%";
+
+                document.getElementById(
+                    "adminAcceptedBar"
+                ).style.width = acceptedPercent + "%";
+
+                document.getElementById(
+                    "adminPendingTrack"
+                ).setAttribute(
+                    "aria-valuenow",
+                    pendingPercent.toFixed(1)
+                );
+
+                document.getElementById(
+                    "adminAcceptedTrack"
+                ).setAttribute(
+                    "aria-valuenow",
+                    acceptedPercent.toFixed(1)
+                );
+            }
+
+            document.addEventListener(
+                "DOMContentLoaded",
+                function () {
+                    const ids = [
+                        "statRequests",
+                        "statPending",
+                        "statAccepted"
+                    ];
+
+                    const observer = new MutationObserver(
+                        updateStatusChart
+                    );
+
+                    ids.forEach(function (id) {
+                        const element = document.getElementById(id);
+
+                        if (element) {
+                            observer.observe(element, {
+                                childList: true,
+                                characterData: true,
+                                subtree: true
+                            });
+                        }
+                    });
+
+                    updateStatusChart();
+                }
+            );
+        })();
+    </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const button = document.getElementById(
+        'adminMobileMenuBtn'
+    );
+
+    const menu = document.getElementById(
+        'adminMobileNav'
+    );
+
+    if (!button || !menu) return;
+
+    button.addEventListener('click', function () {
+
+        const isOpen = !menu.hidden;
+
+        menu.hidden = isOpen;
+
+        button.setAttribute(
+            'aria-expanded',
+            String(!isOpen)
+        );
+
+        button.setAttribute(
+            'aria-label',
+            isOpen
+                ? 'Open navigation menu'
+                : 'Close navigation menu'
+        );
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && !menu.hidden) {
+            menu.hidden = true;
+            button.setAttribute('aria-expanded', 'false');
+            button.focus();
+        }
+    });
+
+});
+</script>
+
+<script>
+d
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const menuBtn = document.getElementById("adminMobileMenuBtn");
+    const mobileNav = document.getElementById("adminMobileNav");
+
+    if (!menuBtn || !mobileNav) {
+        console.error("Admin mobile menu elements not found");
+        return;
+    }
+
+    menuBtn.addEventListener("click", function () {
+        const shouldOpen = mobileNav.hidden;
+
+        mobileNav.hidden = !shouldOpen;
+
+        menuBtn.setAttribute(
+            "aria-expanded",
+            String(shouldOpen)
+        );
+    });
+});
+</script>
+
+
+</body>
+</html>

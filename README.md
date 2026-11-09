@@ -83,3 +83,7 @@ Spring Security handles sessions, encrypted BCrypt passwords, CSRF and admin/don
 - `spring.jpa.hibernate.ddl-auto=update` is suitable for a college demo, not for production migrations. Credentials belong in environment variables, not source control.
 - Do not use real patient details or rely on this prototype during emergencies.
 - CSS follows the supplied red/white multi-dashboard visual direction, but is not a pixel-perfect duplication of the reference image.
+
+
+## Live Link 
+https://raktasetu-r7wz.onrender.com/
